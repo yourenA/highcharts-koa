@@ -1,0 +1,18 @@
+[
+  {
+    "key":0,
+    "formulaName":"ROUND(4096*R/(R+K),0)",
+    "formulaParameterForOne":["K"],
+    "formulaParameterForArr":["R"],
+    "XAxis":"T",
+    "XAxisUnit":"(℃)"
+  },
+  {
+    "key":1,
+    "formulaName":"(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3",
+    "formulaParameterForOne":["Vcc","R1","R2","R3","Rx"],
+    "formulaParameterForArr":["R"],
+    "XAxis":"T",
+    "XAxisUnit":"(℃)"
+  }
+]
