@@ -82,28 +82,54 @@
                 }
                 return;
             case 1:
-                var Vcc = parseFloat($('#Vcc').val());
-                var R1 = parseFloat($('#R1').val());
-                var R2 = parseFloat($('#R2').val());
-                var R3 = parseFloat($('#R3').val());
-                var Rx = parseFloat($('#Rx').val());
-                var temperatureVal_1 = [];
-                var resistanceVal_1 = [];
-                var resultArr_1 = [];
-                temperatureVal_1 = $('#T').val().split('\n');
-                resistanceVal_1 = $('#R').val().split('\n');
-                temperatureVal_1 = removeSpaceInArr(temperatureVal_1);
-                resistanceVal_1 = removeSpaceInArr(resistanceVal_1);
-                if (!Vcc || !R1 || !R2 || !R3 || !Rx || temperatureVal_1.length === 0 || resistanceVal_1.length === 0 || temperatureVal_1.length !== resistanceVal_1.length) {
+            var Vcc = parseFloat($('#Vcc').val());
+            var R1 = parseFloat($('#R1').val());
+            var R2 = parseFloat($('#R2').val());
+            var R3 = parseFloat($('#R3').val());
+            var Rx = parseFloat($('#Rx').val());
+            var temperatureVal_1 = [];
+            var resistanceVal_1 = [];
+            var resultArr_1 = [];
+            temperatureVal_1 = $('#T').val().split('\n');
+            resistanceVal_1 = $('#R').val().split('\n');
+            temperatureVal_1 = removeSpaceInArr(temperatureVal_1);
+            resistanceVal_1 = removeSpaceInArr(resistanceVal_1);
+            if (!Vcc || !R1 || !R2 || !R3 || !Rx || temperatureVal_1.length === 0 || resistanceVal_1.length === 0 || temperatureVal_1.length !== resistanceVal_1.length) {
+                alert("参数为空或参数长度不同");
+                return false;
+            } else {
+                for (var k = 0; k < temperatureVal_1.length; k++) {
+                    //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3
+                    resultArr_1.push(Vcc / (R1 + (R2 + R3) * resistanceVal_1[k] / (R2 + R3 + resistanceVal_1[k])) * resistanceVal_1[k] / (R2 + R3 + resistanceVal_1[k]) * R3);
+                }
+                $('#result').val(resultArr_1.join('\n'));
+                setResult(temperatureVal_1, resistanceVal_1, resultArr_1, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+            }
+
+            return;
+            case 2:
+                var Y = parseFloat($('#Y').val());
+                var ZVal = [];
+                var KVal = [];
+                var XVal=[];
+                var resultArr_2 = [];
+                XVal = $('#X').val().split('\n');
+                KVal = $('#K').val().split('\n');
+                ZVal = $('#Z').val().split('\n');
+
+                XVal = removeSpaceInArr(XVal);
+                KVal = removeSpaceInArr(KVal);
+                ZVal = removeSpaceInArr(ZVal);
+                if (!Y || XVal.length === 0 || KVal.length === 0 || ZVal.length === 0 || ZVal.length !== KVal.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var k = 0; k < temperatureVal_1.length; k++) {
+                    for (var k = 0; k < XVal.length; k++) {
                         //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3
-                        resultArr_1.push(Vcc / (R1 + (R2 + R3) * resistanceVal_1[k] / (R2 + R3 + resistanceVal_1[k])) * resistanceVal_1[k] / (R2 + R3 + resistanceVal_1[k]) * R3);
+                        resultArr_2.push(XVal[k]+Y+ZVal[k]+KVal[k]);
                     }
-                    $('#result').val(resultArr_1.join('\n'));
-                    setResult(temperatureVal_1, resistanceVal_1, resultArr_1, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+                    $('#result').val(resultArr_2.join('\n'));
+                    setResult(XVal, ZVal, resultArr_2, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
                 }
 
                 return;

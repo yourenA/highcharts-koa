@@ -14,5 +14,13 @@
     "formulaParameterForArr":["R"],
     "XAxis":"T",
     "XAxisUnit":"(℃)"
+  },
+  {
+    "key":2,
+    "formulaName":"X+Y+Z+K",
+    "formulaParameterForOne":["Y"],
+    "formulaParameterForArr":["Z","K"],
+    "XAxis":"X",
+    "XAxisUnit":"deg"
   }
 ]
