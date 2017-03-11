@@ -32,7 +32,6 @@ app.use(async (ctx, next) => {
 
 router.use('/', index.routes(), index.allowedMethods());
 router.use('/api', api.routes(), api.allowedMethods());
-
 app.use(router.routes(), router.allowedMethods());
 // response
 

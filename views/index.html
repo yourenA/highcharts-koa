@@ -8,6 +8,36 @@
     <script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/index.css">
+    <style>
+        .a-upload {
+            position: relative;
+            margin-top: 20px;
+            margin-left: 5px;
+            padding: 5px;
+            outline: none;
+            border: 1px solid #333;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .a-upload input {
+            position: absolute;
+            right: 0;
+            margin-left: 5px;
+            padding: 5px;
+            top: 0;
+            opacity: 0;
+            filter: alpha(opacity=0);
+            cursor: pointer
+        }
+
+        .a-upload:hover {
+            color: #444;
+            background: #eee;
+            border-color: #ccc;
+            text-decoration: none
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -15,7 +45,7 @@
         <div class="top-left">
             <label for="formula">选择公式</label>
             <select name="" id="formula">
-                <option >选择公式</option>
+                <option>选择公式</option>
             </select>
         </div>
 
@@ -27,6 +57,15 @@
             </div>
             <div class="left-parameter">
             </div>
+            <form enctype='multipart/form-data' action='javascript:;' >
+                <button  class="a-upload">选择文件
+                    <input type="file" name="file" id="file" class="form-control"/>
+                </button>
+                <button  onClick="uploadFile()">上传</button>
+                <span id="spanMessage"></span>
+            </form>
+            <div class="showFileName"></div>
+            <div class="fileerrorTip"></div>
             <button id="compute">计算结果</button>
             <button id="export">导出数据</button>
         </div>
@@ -62,6 +101,5 @@
 </script>
 <script src="./js/common.js"></script>
 <script src="./js/choseFormula.js"></script>
-<!--<script src="./js/index.js"></script>-->
 </body>
 </html>

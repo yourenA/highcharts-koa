@@ -2,8 +2,8 @@
  * Created by Administrator on 2017/3/10.
  */
 import xlsx from 'node-xlsx';
-import fs from 'fs';
-let buffer
+import {rotateArr} from './common';
+let buffer;
 exports.exportResult = async (ctx) =>{
     let xlsxData=[];
     let resultHead=[];
@@ -37,14 +37,4 @@ exports.getExportResult = async (ctx) =>{
     ctx.set('Content-Disposition', 'attachment; filename=result.xlsx');
     ctx.body = buffer;
 };
-function rotateArr (arr) {
-    let newArr = [];
-    for (let i = 0; i <= arr[0].length - 1; i++) {
-        let temArr = [];
-        for (let j = 0; j <=arr.length - 1 ;j++) {
-            temArr.push(arr[j][i]);
-        }
-        newArr.push(temArr)
-    }
-    return newArr
-}
+
