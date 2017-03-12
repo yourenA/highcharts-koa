@@ -130,9 +130,22 @@ $(".a-upload").on("change","input[type='file']",function(){
 })
 
 function uploadFile(){
+    if(isNaN(parseInt($('#formula').val()))){
+        alert("请先选择公式");
+        return false;
+    }
+    console.log("$('#file').val()",$('#file').val())
+    if($('#file').val() === ''){
+        alert("请先选择文件");
+        return false;
+    }
+    console.log($('#file').val().indexOf(".xlsx"));
+    if($('#file').val().indexOf("xlsx") === -1 ){
+        alert("请选择xlsx文件");
+        return false;
+    }
     var formData = new FormData();
     formData.append("file",$('#file')[0].files[0]);
-    console.log($('#file')[0].files[0])
     console.log(formData);
     $.ajax({
         url: '/api/import',
@@ -148,6 +161,8 @@ function uploadFile(){
                 for(var i=0;i<data.length;i++){
                     $('.left-parameter').find('textarea').eq(i).val(data[i].join('\n'));
                 }
+            }else{
+                alert('导入文件参数与公式参数不相同')
             }
         },
         error: function(){
