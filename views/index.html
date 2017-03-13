@@ -6,39 +6,10 @@
     <script src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     <script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
+    <script src="https://img.hcharts.cn/highcharts-plugins/highcharts-zh_CN.js"></script>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/winpop.css">
     <link rel="stylesheet" href="./css/index.css">
-    <style>
-        .a-upload {
-            position: relative;
-            margin-top: 20px;
-            margin-left: 5px;
-            padding: 5px;
-            outline: none;
-            border: 1px solid #333;
-            cursor: pointer;
-            overflow: hidden;
-        }
-
-        .a-upload input {
-            position: absolute;
-            right: 0;
-            margin-left: 5px;
-            padding: 5px;
-            top: 0;
-            opacity: 0;
-            filter: alpha(opacity=0);
-            cursor: pointer
-        }
-
-        .a-upload:hover {
-            color: #444;
-            background: #eee;
-            border-color: #ccc;
-            text-decoration: none
-        }
-    </style>
 </head>
 <body>
 <div class="container">
@@ -54,21 +25,24 @@
     <div class="center">
         <div class="left">
             <div class="formulaParameterForOne">
-                <table></table>
+            </div>
+            <div class="addOneFormulaParam">
+                <div id="addOneFormulaParam"></div>
             </div>
             <div class="left-parameter">
             </div>
+            <div class="showFileName"></div>
+            <div class="fileerrorTip"></div>
             <form enctype='multipart/form-data' action='javascript:;'>
                 <button class="a-upload">选择文件
                     <input type="file" name="file" id="file" class="form-control"/>
                 </button>
                 <button onClick="uploadFile()">上传</button>
-                <span id="spanMessage"></span>
+                <button id="compute">计算结果</button>
+                <button id="export">导出数据</button>
             </form>
-            <div class="showFileName"></div>
-            <div class="fileerrorTip"></div>
-            <button id="compute">计算结果</button>
-            <button id="export">导出数据</button>
+
+
         </div>
         <div class="right">
             <div id="hchartsBox">

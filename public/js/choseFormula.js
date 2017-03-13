@@ -9,6 +9,7 @@
     var formulaParameterForOneHtml = '';
     var formulaParameterForArrHtml = '';
     var canExportExcel=false;
+    var comparedtableId=1;
     $.ajax({
         url: "./../config.json",
         type: "GET",
@@ -22,29 +23,27 @@
         }
     });
     $('#formula').bind('change', function (e) {
+        $('.addOneFormulaParam').css({display:'block'})
         $('#file').val('');
         $(".showFileName").html("");
-        $(".fileerrorTip").html("您未上传文件，或者您上传文件类型有误！").show();
+        $(".fileerrorTip").html("请选择xlsx文件").show();
         canExportExcel=false;
         formula = parseInt($(this).val());
         console.log(formula);
         if (isNaN(formula)) {
             return false;
         }
-        formulaParameterForOneHtml = '';
         formulaParameterForArrHtml = '';
-        console.log(fomulaData[formula].formulaParameterForOne);
-        for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
-            formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] + "</td><td> <input type='text' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
-        }
+        formulaParameterForOneHtml=setParameterForOneHtml(comparedtableId,fomulaData,formula);
+
 
         formulaParameterForArrHtml += "<div>\
-                    <h4>" + fomulaData[formula].XAxis + "</h4>\
+                    <h4>" + fomulaData[formula].XAxis + " "+fomulaData[formula].XAxisUnit+"</h4>\
                     <textarea name='' id='" + fomulaData[formula].XAxis + "' ></textarea>\
                 </div> ";
         for (var i = 0; i < fomulaData[formula].formulaParameterForArr.length; i++) {
             formulaParameterForArrHtml += "<div >\
-                    <h4>" + fomulaData[formula].formulaParameterForArr[i] + "</h4>\
+                    <h4>" + fomulaData[formula].formulaParameterForArr[i]  +" "+fomulaData[formula].formulaParameterForArrUnit[i]+ "</h4>\
                     <textarea name='' id='" + fomulaData[formula].formulaParameterForArr[i] + "' ></textarea>\
                 </div> ";
         }
@@ -53,43 +52,47 @@
                     <textarea name='' id='result' ></textarea>\
                 </div> ";
         $('.left-parameter').html(formulaParameterForArrHtml);
-        $('.formulaParameterForOne table').html(formulaParameterForOneHtml);
+        $('.formulaParameterForOne ').html(formulaParameterForOneHtml);
 
         for(var z=0;z<$('.formulaParameterForOne input').length;z++){
-            $('.formulaParameterForOne input').eq(z).bind('keyup',function () {
+            $('.formulaParameterForOne input').eq(z).bind('keyup change',function () {
                 canExportExcel=false;
             })
         }
         for(var y=0;y<$('.left-parameter textarea').length;y++){
-            $('.left-parameter textarea').eq(y).bind('keyup',function () {
+            $('.left-parameter textarea').eq(y).bind('keyup change',function () {
                 canExportExcel=false;
             })
         }
+
+        $('#addOneFormulaParam').bind('click',function (e) {
+
+        })
 
     });
 
     $('#compute').bind('click', function (e) {
         switch (formula) {
             case 0:
-                var varK = parseFloat($('#K').val());
-                var temperatureVal_0 = [];
-                var resistanceVal_0 = [];
-                var resultArr_0 = [];
-                temperatureVal_0 = $('#T').val().split('\n');
-                resistanceVal_0 = $('#R').val().split('\n');
+                var K = parseFloat($('#K').val());
+                var XAxis = [];
+                var R = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                R = $('#R').val().split('\n');
 
-                temperatureVal_0 = removeSpaceInArr(temperatureVal_0);
-                resistanceVal_0 = removeSpaceInArr(resistanceVal_0);
-                if (!varK || temperatureVal_0.length === 0 || resistanceVal_0.length === 0 || temperatureVal_0.length !== resistanceVal_0.length) {
+                XAxis = removeSpaceInArr(XAxis);
+                R = removeSpaceInArr(R);
+                if (!K || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var i = 0; i < temperatureVal_0.length; i++) {
+                    for (var i = 0; i < XAxis.length; i++) {
                         //ROUND(4096*$B2/($B2+10),0)
-                        resultArr_0.push(Math.round(4096 * resistanceVal_0[i] / (resistanceVal_0[i] + varK)));
+                        Result.push(Math.round(4096 * R[i] / (R[i] + K)));
                     }
-                    $('#result').val(resultArr_0.join('\n'));
-                    setResult(temperatureVal_0, resistanceVal_0, resultArr_0, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+                    $('#result').val(Result.join('\n'));
+                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
                     canExportExcel=true;
 
                 }
@@ -100,50 +103,50 @@
             var R2 = parseFloat($('#R2').val());
             var R3 = parseFloat($('#R3').val());
             var Rx = parseFloat($('#Rx').val());
-            var temperatureVal_1 = [];
-            var resistanceVal_1 = [];
-            var resultArr_1 = [];
-            temperatureVal_1 = $('#T').val().split('\n');
-            resistanceVal_1 = $('#R').val().split('\n');
-            temperatureVal_1 = removeSpaceInArr(temperatureVal_1);
-            resistanceVal_1 = removeSpaceInArr(resistanceVal_1);
-            if (!Vcc || !R1 || !R2 || !R3 || !Rx || temperatureVal_1.length === 0 || resistanceVal_1.length === 0 || temperatureVal_1.length !== resistanceVal_1.length) {
+            var XAxis = [];
+            var R = [];
+            var Result = [];
+            XAxis = $('#T').val().split('\n');
+            R = $('#R').val().split('\n');
+            XAxis = removeSpaceInArr(XAxis);
+            R = removeSpaceInArr(R);
+            if (!Vcc || !R1 || !R2 || !R3 || !Rx || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
                 alert("参数为空或参数长度不同");
                 return false;
             } else {
-                for (var k = 0; k < temperatureVal_1.length; k++) {
+                for (var k = 0; k < XAxis.length; k++) {
                     //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3
-                    resultArr_1.push(Vcc / (R1 + (R2 + R3) * resistanceVal_1[k] / (R2 + R3 + resistanceVal_1[k])) * resistanceVal_1[k] / (R2 + R3 + resistanceVal_1[k]) * R3);
+                    Result.push(Vcc / (R1 + (R2 + R3) * R[k] / (R2 + R3 + R[k])) * R[k] / (R2 + R3 + R[k]) * R3);
                 }
-                $('#result').val(resultArr_1.join('\n'));
-                setResult(temperatureVal_1, resistanceVal_1, resultArr_1, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+                $('#result').val(Result.join('\n'));
+                setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
                 canExportExcel=true;
             }
 
             return;
             case 2:
                 var Y = parseFloat($('#Y').val());
-                var ZVal = [];
-                var KVal = [];
-                var XVal=[];
-                var resultArr_2 = [];
-                XVal = $('#X').val().split('\n');
-                KVal = $('#K').val().split('\n');
-                ZVal = $('#Z').val().split('\n');
+                var Z = [];
+                var K = [];
+                var XAxis=[];
+                var Result = [];
+                XAxis = $('#X').val().split('\n');
+                K = $('#K').val().split('\n');
+                Z = $('#Z').val().split('\n');
 
-                XVal = removeSpaceInArr(XVal);
-                KVal = removeSpaceInArr(KVal);
-                ZVal = removeSpaceInArr(ZVal);
-                if (!Y || XVal.length === 0 || KVal.length === 0 || ZVal.length === 0 || ZVal.length !== KVal.length) {
+                XAxis = removeSpaceInArr(XAxis);
+                K = removeSpaceInArr(K);
+                Z = removeSpaceInArr(Z);
+                if (!Y || XAxis.length === 0 || K.length === 0 || Z.length === 0 || Z.length !== K.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var k = 0; k < XVal.length; k++) {
-                        //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3
-                        resultArr_2.push(XVal[k]+Y+ZVal[k]+KVal[k]);
+                    for (var k = 0; k < XAxis.length; k++) {
+                        //x+y+z
+                        Result.push(XAxis[k]+Y+Z[k]+K[k]);
                     }
-                    $('#result').val(resultArr_2.join('\n'));
-                    setResult(XVal, ZVal, resultArr_2, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+                    $('#result').val(Result.join('\n'));
+                    setResult(XAxis, Z, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
                     canExportExcel=true;
                 }
 
@@ -213,6 +216,7 @@
             $('#exportExcel-content').css({display:'none'});
         });
     });
+    
 
 
 })(jQuery);
