@@ -9,7 +9,6 @@ exports.exportResult = async (ctx) =>{
     let resultHead=[];
     let resultDate=[];
     let body = ctx.request.body;
-    console.log(body)
     const formulaName=body.formulaName,
         formulaParameterForOne=body.formulaParameterForOne,
         formulaParameterForArr=body.formulaParameterForArr;

@@ -22,6 +22,9 @@
         }
     });
     $('#formula').bind('change', function (e) {
+        $('#file').val('');
+        $(".showFileName").html("");
+        $(".fileerrorTip").html("您未上传文件，或者您上传文件类型有误！").show();
         canExportExcel=false;
         formula = parseInt($(this).val());
         console.log(formula);
@@ -193,18 +196,21 @@
 
                 console.log(data);
                 if(data===true){
-                    $('.mask').css({display:'block'});
+                    $('#exportExcel-mask').css({display:'block'});
+                    $('#exportExcel-content').css({display:'block'});
                 }
+            },
+            error:function (err) {
+                console.log("err",err)
             }
         });
-        $(".mask").bind('click', function (e) {
-            console.log(e.target.classList.value);
-            if (e.target.classList.value === 'mask') {
-                $(this).css({ display: 'none' });
-            }
+        $("#exportExcel-mask").bind('click', function (e) {
+            $('#exportExcel-mask').css({display:'none'});
+            $('#exportExcel-content').css({display:'none'});
         });
         $("#download").bind('click', function (e) {
-            $('.mask').css({display:'none'});
+            $('#exportExcel-mask').css({display:'none'});
+            $('#exportExcel-content').css({display:'none'});
         });
     });
 

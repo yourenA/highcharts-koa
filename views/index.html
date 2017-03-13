@@ -7,6 +7,7 @@
     <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
     <script src="http://cdn.hcharts.cn/highcharts/modules/exporting.js"></script>
     <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/winpop.css">
     <link rel="stylesheet" href="./css/index.css">
     <style>
         .a-upload {
@@ -57,11 +58,11 @@
             </div>
             <div class="left-parameter">
             </div>
-            <form enctype='multipart/form-data' action='javascript:;' >
-                <button  class="a-upload">选择文件
+            <form enctype='multipart/form-data' action='javascript:;'>
+                <button class="a-upload">选择文件
                     <input type="file" name="file" id="file" class="form-control"/>
                 </button>
-                <button  onClick="uploadFile()">上传</button>
+                <button onClick="uploadFile()">上传</button>
                 <span id="spanMessage"></span>
             </form>
             <div class="showFileName"></div>
@@ -79,11 +80,10 @@
         </div>
     </div>
 </div>
-<div class="mask">
-    <div class="pup">
-        <h3>确定要导出excel表格吗?</h3>
-        <a id="download" href="/api/export">确定</a>
-    </div>
+<div class="J_WinpopMask winpop-mask " id="exportExcel-mask"></div>
+<div class="J_WinpopBox winpop-box" id="exportExcel-content" style="display: none;">
+    <div class="J_WinpopMain winpop-main">确定要导出excel表格吗?</div>
+    <div class="J_WinpopBtns winpop-btns"><a href="/api/export" id="download" class="J_AltBtn pop-btn alert-button" >确定</a></div>
 </div>
 <script>
     $(function () {
@@ -99,6 +99,7 @@
         });
     });
 </script>
+<script src="./js/winpop.js"></script>
 <script src="./js/common.js"></script>
 <script src="./js/choseFormula.js"></script>
 </body>

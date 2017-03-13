@@ -11,14 +11,16 @@ exports.importExcel = async (ctx) =>{
     let body = ctx.req.file ;/*这里是req,不是request*/
     let fileurl=body.path;
     const workSheetsFromFile = xlsx.parse(`${__dirname}/../../${fileurl}`);
-    console.log(workSheetsFromFile);
+    console.log(workSheetsFromFile[0].data);
     workSheetsFromFile[0].data.shift();
     let  importData=rotateArr(workSheetsFromFile[0].data);
-    fs.unlink(`${__dirname}/../${fileurl}`, function(err) {
+    fs.unlink(`${__dirname}/../../${fileurl}`, function(err) {
         if (err) {
             console.log(err);
+        }else{
+            console.log(`del ${__dirname}/../../${fileurl} success`);
         }
-        console.log(`del ${__dirname}/../../${fileurl} success`);
+
     });
 
     ctx.body=importData;
