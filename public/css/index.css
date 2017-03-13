@@ -51,6 +51,22 @@
 .center .left .formulaParameterForOne table tr td input {
   padding: 3px;
   width: 100%}
+.center .left .formulaParameterForOne table thead th{
+  padding: 5px;
+}
+.center .left .formulaParameterForOne table thead th:nth-child(2){
+  font-size: 14px;
+  font-weight: normal;
+  text-align: right;
+}
+.center .left .formulaParameterForOne table thead th:nth-child(2) span{
+  cursor: pointer;
+  margin-right: 3px;
+}
+.center .left .formulaParameterForOne table thead th:nth-child(2) span:hover{
+  text-decoration: underline;
+  color: #1296db;
+}
 .center .left .left-parameter {
   display: -webkit-box;
   display: -webkit-flex;

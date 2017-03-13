@@ -23,6 +23,7 @@
         }
     });
     $('#formula').bind('change', function (e) {
+        comparedtableId=1;
         $('.addOneFormulaParam').css({display:'block'})
         $('#file').val('');
         $(".showFileName").html("");
@@ -47,10 +48,7 @@
                     <textarea name='' id='" + fomulaData[formula].formulaParameterForArr[i] + "' ></textarea>\
                 </div> ";
         }
-        formulaParameterForArrHtml += "<div>\
-                    <h4>result</h4>\
-                    <textarea name='' id='result' ></textarea>\
-                </div> ";
+        formulaParameterForArrHtml += setParameterForArrResult(comparedtableId)
         $('.left-parameter').html(formulaParameterForArrHtml);
         $('.formulaParameterForOne ').html(formulaParameterForOneHtml);
 
@@ -64,10 +62,6 @@
                 canExportExcel=false;
             })
         }
-
-        $('#addOneFormulaParam').bind('click',function (e) {
-
-        })
 
     });
 
@@ -216,7 +210,23 @@
             $('#exportExcel-content').css({display:'none'});
         });
     });
-    
+
+    $('#addOneFormulaParam').bind('click',function (e) {
+        comparedtableId+=1;
+        var addFormulaParameterForOneHtml=setParameterForOneHtml(comparedtableId,fomulaData,formula);
+        var addFormulaParameterForArrResult=setParameterForArrResult(comparedtableId);
+        $('.formulaParameterForOne ').append(addFormulaParameterForOneHtml);
+        $('.left-parameter ').append(addFormulaParameterForArrResult);
+    });
+
+    $('.formulaParameterForOne').on('click','.delParameterOne',function (e) {
+        console.log('delParameterOne');
+        var delIndex=parseInt($(this).parents('table').data('index'));
+        console.log(delIndex);
+        $(".formulaParameterForOne").find('.table-'+delIndex).remove();
+        $(".left-parameter").find('.result-'+delIndex).remove();
+        // $(".formulaParameterForOne table").eq(delIndex-1).remove()
+    });
 
 
 })(jQuery);

@@ -19,14 +19,22 @@ function removeSpaceInArr(arr) {
 }
 
 function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
-    var formulaParameterForOneHtml = '<table><thead>参数组'+comparedtableId+'</thead>';
+    console.log("comparedtableId",comparedtableId);
+    var formulaParameterForOneHtml = '<table class="table-'+comparedtableId+'" data-index="'+comparedtableId+'"><thead><tr><th>参数组'+comparedtableId+'</th><th><span class="delParameterOne" >删除参数</span></th></tr></thead>';
     console.log(fomulaData[formula].formulaParameterForOne);
     for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
         formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
     }
-    formulaParameterForOneHtml += '<table>';
+    formulaParameterForOneHtml += '</table>';
 
     return formulaParameterForOneHtml
+}
+
+function setParameterForArrResult(comparedtableId) {
+    return "<div class='result-"+comparedtableId+"'>\
+                    <h4>result"+comparedtableId+"</h4>\
+                    <textarea name='' id='result' class='result-"+comparedtableId+"' ></textarea>\
+                </div> ";
 }
 
 var highcharts1 = null;
