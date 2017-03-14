@@ -68,11 +68,11 @@
     $('#compute').bind('click', function (e) {
         switch (formula) {
             case 0:
-                var ParamArr = []
+                var ParamArr = [];
                 var KArr = [];
-                for (var n = 0; n < $('.formulaParameterForOne table').length; n++) {
-                    KArr.push(parseFloat($('.formulaParameterForOne table').eq(n).find('input').val()));
-                    ParamArr.push($('.formulaParameterForOne table').eq(n).find('h5').text())
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    KArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    ParamArr.push($('.formulaParameterForOne table').eq(i).find('h5').text())
                 }
                 console.log("KArr", KArr)
                 var XAxis = [];
@@ -87,13 +87,13 @@
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var m = 0; m < KArr.length; m++) {
+                    for (var n = 0; n < KArr.length; n++) {
                         var tempResult = [];
-                        for (var i = 0; i < XAxis.length; i++) {
+                        for (var m = 0; m < XAxis.length; m++) {
                             //ROUND(4096*$B2/($B2+10),0)
-                            tempResult.push(Math.round(R[i] + (R[i] + KArr[m])));
+                            tempResult.push(Math.round(R[m] + (R[m] + KArr[n])));
                         }
-                        $('.left-parameter').find('.result ').eq(m).val(tempResult.join('\n'));
+                        $('.result').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
@@ -103,11 +103,25 @@
                 }
                 return;
             case 1:
-                var Vcc = parseFloat($('#Vcc').val());
-                var R1 = parseFloat($('#R1').val());
-                var R2 = parseFloat($('#R2').val());
-                var R3 = parseFloat($('#R3').val());
-                var Rx = parseFloat($('#Rx').val());
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                var R3Arr = [];
+                var RxArr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
+                    RxArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(4).val()));
+                    ParamArr.push($('.formulaParameterForOne table').eq(i).find('h5').text())
+                }
+                console.log("VccArr", VccArr)
+                console.log("R1Arr", R1Arr)
+                console.log("R2Arr", R2Arr)
+                console.log("R3Arr", R3Arr)
+                console.log("RxArr", RxArr)
                 var XAxis = [];
                 var R = [];
                 var Result = [];
@@ -115,43 +129,58 @@
                 R = $('#R').val().split('\n');
                 XAxis = removeSpaceInArr(XAxis);
                 R = removeSpaceInArr(R);
-                if (!Vcc || !R1 || !R2 || !R3 || !Rx || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || RxArr.length === 0 || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var k = 0; k < XAxis.length; k++) {
-                        //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3
-                        Result.push(Vcc / (R1 + (R2 + R3) * R[k] / (R2 + R3 + R[k])) * R[k] / (R2 + R3 + R[k]) * R3);
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3 (Math.round(R[m] + (R[m] + KArr[n])));
+                            tempResult.push(VccArr[n] / (R1Arr[n] + (R2Arr[n] + R3Arr[n]) * R[m] / (R2Arr[n] + R3Arr[n] + R[m])) * R[m] / (R2Arr[n] + R3Arr[n] + R[m]) * R3Arr[n]);
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
                     }
-                    $('#result').val(Result.join('\n'));
-                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+                    console.log("result", Result);
+                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
 
                 return;
             case 2:
-                var Y = parseFloat($('#Y').val());
+                var ParamArr = [];
+                var YArr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    YArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    ParamArr.push($('.formulaParameterForOne table').eq(i).find('h5').text())
+                }
                 var Z = [];
                 var K = [];
                 var XAxis = [];
                 var Result = [];
                 XAxis = $('#X').val().split('\n');
-                K = $('#K').val().split('\n');
                 Z = $('#Z').val().split('\n');
+                K = $('#K').val().split('\n');
 
                 XAxis = removeSpaceInArr(XAxis);
                 K = removeSpaceInArr(K);
                 Z = removeSpaceInArr(Z);
-                if (!Y || XAxis.length === 0 || K.length === 0 || Z.length === 0 || Z.length !== K.length) {
+                if (YArr.length===0 || XAxis.length === 0 || K.length === 0 || Z.length === 0 || Z.length !== K.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var k = 0; k < XAxis.length; k++) {
-                        //x+y+z
-                        Result.push(XAxis[k] + Y + Z[k] + K[k]);
+                    for (var n = 0; n < YArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //ROUND(4096*$B2/($B2+10),0)
+                            tempResult.push(XAxis[m] + YArr[n] + Z[m] + K[m]);
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
                     }
-                    $('#result').val(Result.join('\n'));
-                    setResult(XAxis, Z, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+                    console.log("result", Result);
+                    setResult(XAxis, Z, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
 

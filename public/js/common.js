@@ -33,7 +33,7 @@ function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
 function setParameterForArrResult(comparedtableId) {
     return "<div class='result-"+comparedtableId+"'>\
                     <h4>result"+comparedtableId+"</h4>\
-                    <textarea name='' id='result' class='result result-"+comparedtableId+"' ></textarea>\
+                    <textarea name=''  class='result result-"+comparedtableId+"' ></textarea>\
                 </div> ";
 }
 
