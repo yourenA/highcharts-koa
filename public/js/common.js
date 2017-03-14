@@ -20,7 +20,7 @@ function removeSpaceInArr(arr) {
 
 function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
     console.log("comparedtableId",comparedtableId);
-    var formulaParameterForOneHtml = '<table class="table-'+comparedtableId+'" data-index="'+comparedtableId+'"><thead><tr><th>参数组'+comparedtableId+'</th><th><span class="delParameterOne" >删除参数</span></th></tr></thead>';
+    var formulaParameterForOneHtml = '<table class="table-'+comparedtableId+'" data-index="'+comparedtableId+'"><thead><tr><th ><h5>参数组'+comparedtableId+'</h5></th><th><span class="delParameterOne" >删除参数</span></th></tr></thead>';
     console.log(fomulaData[formula].formulaParameterForOne);
     for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
         formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
@@ -33,16 +33,21 @@ function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
 function setParameterForArrResult(comparedtableId) {
     return "<div class='result-"+comparedtableId+"'>\
                     <h4>result"+comparedtableId+"</h4>\
-                    <textarea name='' id='result' class='result-"+comparedtableId+"' ></textarea>\
+                    <textarea name='' id='result' class='result result-"+comparedtableId+"' ></textarea>\
                 </div> ";
 }
 
 var highcharts1 = null;
 var highcharts2 = null;
-function setResult(XAxisArr, resistanceVal, resultArr, title, XAxis, XAxisUnit) {
+function setResult(XAxisArr, resistanceVal, resultArr, title, XAxis, XAxisUnit,ParamArr) {
 
-    console.log(resultArr);
-
+    var Result=[];
+    for(var i=0;i<resultArr.length;i++){
+        Result.push({
+            name: ParamArr[i],
+            data: resultArr[i]
+        })
+    }
     highcharts1 = Highcharts.chart('hchartsBox', {
         chart: {
             plotBorderWidth: 1,
@@ -83,10 +88,7 @@ function setResult(XAxisArr, resistanceVal, resultArr, title, XAxis, XAxisUnit) 
             footerFormat: '</table>',
             valueDecimals: 2
         },
-        series: [{
-            name: title,
-            data: resultArr
-        }]
+        series:Result
     });
     highcharts2 = Highcharts.chart('hchartsBox2', {
         chart: {

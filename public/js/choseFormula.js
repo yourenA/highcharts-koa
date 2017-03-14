@@ -8,8 +8,8 @@
     var formula = null;
     var formulaParameterForOneHtml = '';
     var formulaParameterForArrHtml = '';
-    var canExportExcel=false;
-    var comparedtableId=1;
+    var canExportExcel = false;
+    var comparedtableId = 1;
     $.ajax({
         url: "./../config.json",
         type: "GET",
@@ -23,28 +23,28 @@
         }
     });
     $('#formula').bind('change', function (e) {
-        comparedtableId=1;
-        $('.addOneFormulaParam').css({display:'block'})
+        comparedtableId = 1;
+        $('.addOneFormulaParam').css({display: 'block'})
         $('#file').val('');
         $(".showFileName").html("");
         $(".fileerrorTip").html("请选择xlsx文件").show();
-        canExportExcel=false;
+        canExportExcel = false;
         formula = parseInt($(this).val());
         console.log(formula);
         if (isNaN(formula)) {
             return false;
         }
         formulaParameterForArrHtml = '';
-        formulaParameterForOneHtml=setParameterForOneHtml(comparedtableId,fomulaData,formula);
+        formulaParameterForOneHtml = setParameterForOneHtml(comparedtableId, fomulaData, formula);
 
 
         formulaParameterForArrHtml += "<div>\
-                    <h4>" + fomulaData[formula].XAxis + " "+fomulaData[formula].XAxisUnit+"</h4>\
+                    <h4>" + fomulaData[formula].XAxis + " " + fomulaData[formula].XAxisUnit + "</h4>\
                     <textarea name='' id='" + fomulaData[formula].XAxis + "' ></textarea>\
                 </div> ";
         for (var i = 0; i < fomulaData[formula].formulaParameterForArr.length; i++) {
             formulaParameterForArrHtml += "<div >\
-                    <h4>" + fomulaData[formula].formulaParameterForArr[i]  +" "+fomulaData[formula].formulaParameterForArrUnit[i]+ "</h4>\
+                    <h4>" + fomulaData[formula].formulaParameterForArr[i] + " " + fomulaData[formula].formulaParameterForArrUnit[i] + "</h4>\
                     <textarea name='' id='" + fomulaData[formula].formulaParameterForArr[i] + "' ></textarea>\
                 </div> ";
         }
@@ -52,14 +52,14 @@
         $('.left-parameter').html(formulaParameterForArrHtml);
         $('.formulaParameterForOne ').html(formulaParameterForOneHtml);
 
-        for(var z=0;z<$('.formulaParameterForOne input').length;z++){
-            $('.formulaParameterForOne input').eq(z).bind('keyup change',function () {
-                canExportExcel=false;
+        for (var z = 0; z < $('.formulaParameterForOne input').length; z++) {
+            $('.formulaParameterForOne input').eq(z).bind('keyup change', function () {
+                canExportExcel = false;
             })
         }
-        for(var y=0;y<$('.left-parameter textarea').length;y++){
-            $('.left-parameter textarea').eq(y).bind('keyup change',function () {
-                canExportExcel=false;
+        for (var y = 0; y < $('.left-parameter textarea').length; y++) {
+            $('.left-parameter textarea').eq(y).bind('keyup change', function () {
+                canExportExcel = false;
             })
         }
 
@@ -68,7 +68,13 @@
     $('#compute').bind('click', function (e) {
         switch (formula) {
             case 0:
-                var K = parseFloat($('#K').val());
+                var ParamArr = []
+                var KArr = [];
+                for (var n = 0; n < $('.formulaParameterForOne table').length; n++) {
+                    KArr.push(parseFloat($('.formulaParameterForOne table').eq(n).find('input').val()));
+                    ParamArr.push($('.formulaParameterForOne table').eq(n).find('h5').text())
+                }
+                console.log("KArr", KArr)
                 var XAxis = [];
                 var R = [];
                 var Result = [];
@@ -77,52 +83,57 @@
 
                 XAxis = removeSpaceInArr(XAxis);
                 R = removeSpaceInArr(R);
-                if (!K || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
+                if (KArr.length == 0 || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var i = 0; i < XAxis.length; i++) {
-                        //ROUND(4096*$B2/($B2+10),0)
-                        Result.push(Math.round(4096 * R[i] / (R[i] + K)));
+                    for (var m = 0; m < KArr.length; m++) {
+                        var tempResult = [];
+                        for (var i = 0; i < XAxis.length; i++) {
+                            //ROUND(4096*$B2/($B2+10),0)
+                            tempResult.push(Math.round(R[i] + (R[i] + KArr[m])));
+                        }
+                        $('.left-parameter').find('.result ').eq(m).val(tempResult.join('\n'));
+                        Result.push(tempResult)
                     }
-                    $('#result').val(Result.join('\n'));
-                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
-                    canExportExcel=true;
+                    console.log("result", Result);
+                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
 
                 }
                 return;
             case 1:
-            var Vcc = parseFloat($('#Vcc').val());
-            var R1 = parseFloat($('#R1').val());
-            var R2 = parseFloat($('#R2').val());
-            var R3 = parseFloat($('#R3').val());
-            var Rx = parseFloat($('#Rx').val());
-            var XAxis = [];
-            var R = [];
-            var Result = [];
-            XAxis = $('#T').val().split('\n');
-            R = $('#R').val().split('\n');
-            XAxis = removeSpaceInArr(XAxis);
-            R = removeSpaceInArr(R);
-            if (!Vcc || !R1 || !R2 || !R3 || !Rx || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
-                alert("参数为空或参数长度不同");
-                return false;
-            } else {
-                for (var k = 0; k < XAxis.length; k++) {
-                    //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3
-                    Result.push(Vcc / (R1 + (R2 + R3) * R[k] / (R2 + R3 + R[k])) * R[k] / (R2 + R3 + R[k]) * R3);
+                var Vcc = parseFloat($('#Vcc').val());
+                var R1 = parseFloat($('#R1').val());
+                var R2 = parseFloat($('#R2').val());
+                var R3 = parseFloat($('#R3').val());
+                var Rx = parseFloat($('#Rx').val());
+                var XAxis = [];
+                var R = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                R = $('#R').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                R = removeSpaceInArr(R);
+                if (!Vcc || !R1 || !R2 || !R3 || !Rx || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var k = 0; k < XAxis.length; k++) {
+                        //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3
+                        Result.push(Vcc / (R1 + (R2 + R3) * R[k] / (R2 + R3 + R[k])) * R[k] / (R2 + R3 + R[k]) * R3);
+                    }
+                    $('#result').val(Result.join('\n'));
+                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
+                    canExportExcel = true;
                 }
-                $('#result').val(Result.join('\n'));
-                setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
-                canExportExcel=true;
-            }
 
-            return;
+                return;
             case 2:
                 var Y = parseFloat($('#Y').val());
                 var Z = [];
                 var K = [];
-                var XAxis=[];
+                var XAxis = [];
                 var Result = [];
                 XAxis = $('#X').val().split('\n');
                 K = $('#K').val().split('\n');
@@ -137,11 +148,11 @@
                 } else {
                     for (var k = 0; k < XAxis.length; k++) {
                         //x+y+z
-                        Result.push(XAxis[k]+Y+Z[k]+K[k]);
+                        Result.push(XAxis[k] + Y + Z[k] + K[k]);
                     }
                     $('#result').val(Result.join('\n'));
                     setResult(XAxis, Z, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit);
-                    canExportExcel=true;
+                    canExportExcel = true;
                 }
 
                 return;
@@ -151,7 +162,7 @@
     });
 
     $('#export').bind('click', function (e) {
-        if(!canExportExcel){
+        if (!canExportExcel) {
             alert('请先计算结果再进行导出');
             return false;
         }
@@ -187,44 +198,44 @@
         $.ajax({
             url: "/api/export",
             type: 'POST',
-            dataType:'json',
+            dataType: 'json',
             data: sendExportData,
             success: function success(data) {
 
                 console.log(data);
-                if(data===true){
-                    $('#exportExcel-mask').css({display:'block'});
-                    $('#exportExcel-content').css({display:'block'});
+                if (data === true) {
+                    $('#exportExcel-mask').css({display: 'block'});
+                    $('#exportExcel-content').css({display: 'block'});
                 }
             },
-            error:function (err) {
-                console.log("err",err)
+            error: function (err) {
+                console.log("err", err)
             }
         });
         $("#exportExcel-mask").bind('click', function (e) {
-            $('#exportExcel-mask').css({display:'none'});
-            $('#exportExcel-content').css({display:'none'});
+            $('#exportExcel-mask').css({display: 'none'});
+            $('#exportExcel-content').css({display: 'none'});
         });
         $("#download").bind('click', function (e) {
-            $('#exportExcel-mask').css({display:'none'});
-            $('#exportExcel-content').css({display:'none'});
+            $('#exportExcel-mask').css({display: 'none'});
+            $('#exportExcel-content').css({display: 'none'});
         });
     });
 
-    $('#addOneFormulaParam').bind('click',function (e) {
-        comparedtableId+=1;
-        var addFormulaParameterForOneHtml=setParameterForOneHtml(comparedtableId,fomulaData,formula);
-        var addFormulaParameterForArrResult=setParameterForArrResult(comparedtableId);
+    $('#addOneFormulaParam').bind('click', function (e) {
+        comparedtableId += 1;
+        var addFormulaParameterForOneHtml = setParameterForOneHtml(comparedtableId, fomulaData, formula);
+        var addFormulaParameterForArrResult = setParameterForArrResult(comparedtableId);
         $('.formulaParameterForOne ').append(addFormulaParameterForOneHtml);
         $('.left-parameter ').append(addFormulaParameterForArrResult);
     });
 
-    $('.formulaParameterForOne').on('click','.delParameterOne',function (e) {
+    $('.formulaParameterForOne').on('click', '.delParameterOne', function (e) {
         console.log('delParameterOne');
-        var delIndex=parseInt($(this).parents('table').data('index'));
+        var delIndex = parseInt($(this).parents('table').data('index'));
         console.log(delIndex);
-        $(".formulaParameterForOne").find('.table-'+delIndex).remove();
-        $(".left-parameter").find('.result-'+delIndex).remove();
+        $(".formulaParameterForOne").find('.table-' + delIndex).remove();
+        $(".left-parameter").find('.result-' + delIndex).remove();
         // $(".formulaParameterForOne table").eq(delIndex-1).remove()
     });
 
