@@ -83,8 +83,14 @@
 
                 XAxis = removeSpaceInArr(XAxis);
                 R = removeSpaceInArr(R);
-                if (KArr.length == 0 || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
-                    alert("参数为空或参数长度不同");
+                for(var j=0;j<($('.formulaParameterForOne input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                if ( KArr.length===0||XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
+                    alert("参数为空,参数长度不同或参数为非数字");
                     return false;
                 } else {
                     for (var n = 0; n < KArr.length; n++) {
@@ -129,6 +135,12 @@
                 R = $('#R').val().split('\n');
                 XAxis = removeSpaceInArr(XAxis);
                 R = removeSpaceInArr(R);
+                for(var j=0;j<($('.formulaParameterForOne input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || RxArr.length === 0 || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -166,6 +178,12 @@
                 XAxis = removeSpaceInArr(XAxis);
                 K = removeSpaceInArr(K);
                 Z = removeSpaceInArr(Z);
+                for(var j=0;j<($('.formulaParameterForOne input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
                 if (YArr.length===0 || XAxis.length === 0 || K.length === 0 || Z.length === 0 || Z.length !== K.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -174,7 +192,7 @@
                         var tempResult = [];
                         for (var m = 0; m < XAxis.length; m++) {
                             //ROUND(4096*$B2/($B2+10),0)
-                            tempResult.push(XAxis[m] + YArr[n] + Z[m] + K[m]);
+                            tempResult.push(parseFloat(XAxis[m] + YArr[n] + Z[m] + K[m]).toFixed(6));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)

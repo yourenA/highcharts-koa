@@ -73,7 +73,8 @@
   display: -ms-flexbox;
   display: flex;
   width: 250px;
-  margin-bottom: 20px;
+  margin: 20px 0;
+
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -webkit-flex-flow: row wrap;
@@ -85,7 +86,7 @@
   -webkit-flex: 1 0 auto;
   -ms-flex: 1 0 auto;
   flex: 1 0 auto;
-  height: 200px;
+  height: 300px;
   width: 70px;
   margin: 0 5px; }
 .center .left .left-parameter div h4 {

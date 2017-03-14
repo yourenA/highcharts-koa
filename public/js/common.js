@@ -48,6 +48,7 @@ function setResult(XAxisArr, resistanceVal, resultArr, title, XAxis, XAxisUnit,P
             data: resultArr[i]
         })
     }
+    console.log("Result",Result)
     highcharts1 = Highcharts.chart('hchartsBox', {
         chart: {
             plotBorderWidth: 1,
