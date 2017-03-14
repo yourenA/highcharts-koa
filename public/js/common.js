@@ -20,7 +20,7 @@ function removeSpaceInArr(arr) {
 
 function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
     console.log("comparedtableId",comparedtableId);
-    var formulaParameterForOneHtml = '<table class="table-'+comparedtableId+'" data-index="'+comparedtableId+'"><thead><tr><th ><h5>参数组'+comparedtableId+'</h5></th><th><span class="delParameterOne" >删除参数</span></th></tr></thead>';
+    var formulaParameterForOneHtml = '<table cellspacing="0" cellpadding="0" class="table-'+comparedtableId+'" data-index="'+comparedtableId+'"><thead><tr><th ><h5>参数组'+comparedtableId+'</h5></th><th><span class="delParameterOne" >删除参数</span></th></tr></thead>';
     console.log(fomulaData[formula].formulaParameterForOne);
     for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
         formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";

@@ -149,7 +149,7 @@
                         var tempResult = [];
                         for (var m = 0; m < XAxis.length; m++) {
                             //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3 (Math.round(R[m] + (R[m] + KArr[n])));
-                            tempResult.push(VccArr[n] / (R1Arr[n] + (R2Arr[n] + R3Arr[n]) * R[m] / (R2Arr[n] + R3Arr[n] + R[m])) * R[m] / (R2Arr[n] + R3Arr[n] + R[m]) * R3Arr[n]);
+                            tempResult.push(parseFloat((VccArr[n] / (R1Arr[n] + (R2Arr[n] + R3Arr[n]) * R[m] / (R2Arr[n] + R3Arr[n] + R[m])) * R[m] / (R2Arr[n] + R3Arr[n] + R[m]) * R3Arr[n]).toFixed(6)));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
@@ -192,7 +192,7 @@
                         var tempResult = [];
                         for (var m = 0; m < XAxis.length; m++) {
                             //ROUND(4096*$B2/($B2+10),0)
-                            tempResult.push(parseFloat(XAxis[m] + YArr[n] + Z[m] + K[m]).toFixed(6));
+                            tempResult.push(parseFloat((XAxis[m] + YArr[n] + Z[m] + K[m]).toFixed(6)));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
