@@ -91,7 +91,7 @@
                         var tempResult = [];
                         for (var m = 0; m < XAxis.length; m++) {
                             //ROUND(4096*$B2/($B2+10),0)
-                            tempResult.push(Math.round(R[m] + (R[m] + KArr[n])));
+                            tempResult.push(Math.round(4096*R[m]/(R[m] + KArr[n])));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
@@ -197,16 +197,20 @@
         }
         var formulaName = $("#formula option:selected").text();
         console.log(formulaName);
-        var formulaParameterForOneTrs = $('.formulaParameterForOne table tr');
         var formulaParameterForOneArr = [];
-        for (var i = 0; i < formulaParameterForOneTrs.length; i++) {
-            var forOneKey = $(formulaParameterForOneTrs[i]).find('td :eq(0)').text();
-            var forOneValue = $(formulaParameterForOneTrs[i]).find('input').val();
-            formulaParameterForOneArr.push({
-                forOneKey: forOneKey,
-                forOneValue: forOneValue
-            });
+        var formulaParameterTables= $('.formulaParameterForOne table');
+        for(var i=0;i<formulaParameterTables.length;i++){
+            var formulaParameterForOneTrs = $('.formulaParameterForOne table').eq(i).find('tr');
+            for (var k = 0; k < formulaParameterForOneTrs.length; k++) {
+                var forOneKey = $(formulaParameterForOneTrs[k]).find('td :eq(0)').text() || $(formulaParameterForOneTrs[k]).find('th :eq(0)').text();
+                var forOneValue = $(formulaParameterForOneTrs[k]).find('input').val();
+                formulaParameterForOneArr.push({
+                    forOneKey: forOneKey,
+                    forOneValue: forOneValue
+                });
+            }
         }
+
         console.log(formulaParameterForOneArr);
         var formulaParameterForArrDivs = $('.left-parameter div');
         var formulaParameterForArrArr = [];
@@ -227,10 +231,10 @@
         $.ajax({
             url: "/api/export",
             type: 'POST',
+            contentType: 'application/json',
             dataType: 'json',
-            data: sendExportData,
+            data: JSON.stringify(sendExportData),
             success: function success(data) {
-
                 console.log(data);
                 if (data === true) {
                     $('#exportExcel-mask').css({display: 'block'});

@@ -31,7 +31,7 @@ function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
 }
 
 function setParameterForArrResult(comparedtableId) {
-    return "<div class='result-"+comparedtableId+"'>\
+    return "<div class='result-content result-"+comparedtableId+"'>\
                     <h4>result"+comparedtableId+"</h4>\
                     <textarea name=''  class='result result-"+comparedtableId+"' ></textarea>\
                 </div> ";
@@ -178,7 +178,7 @@ function uploadFile(){
         processData: false,
         success: function(data){
             console.log('imgUploader upload success, data:', data);
-            if($('.left-parameter>div').length - 1 === data.length){
+            if($('.left-parameter>div:not(.result-content)').length  === data.length){
                 for(var i=0;i<data.length;i++){
                     $('.left-parameter').find('textarea').eq(i).val(data[i].join('\n'));
                 }

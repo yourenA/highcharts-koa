@@ -8,18 +8,21 @@ exports.exportResult = async (ctx) =>{
     let xlsxData=[];
     let resultHead=[];
     let resultDate=[];
-    let body = ctx.request.body;
+    let body =ctx.request.body ;
     const formulaName=body.formulaName,
         formulaParameterForOne=body.formulaParameterForOne,
         formulaParameterForArr=body.formulaParameterForArr;
+
     let formulaNameArr=["formulaName",formulaName];
+    console.log("body",body);
     xlsxData.push(formulaNameArr);
     for(let i =0;i<formulaParameterForOne.length;i++){
         xlsxData.push([formulaParameterForOne[i].forOneKey,formulaParameterForOne[i].forOneValue]);
     }
     for(let j=0;j<formulaParameterForArr.length;j++){
         resultHead.push(formulaParameterForArr[j].forArrKey);
-        resultDate.push(formulaParameterForArr[j].forArrValue)
+        resultDate.push(formulaParameterForArr[j].forArrValue);
+        console.log('resultDate',formulaParameterForArr[j].forArrValue.length)
     }
     xlsxData.push(resultHead);
     resultDate=rotateArr(resultDate);
