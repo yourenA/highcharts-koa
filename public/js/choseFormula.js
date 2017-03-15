@@ -48,7 +48,6 @@
                     <textarea name='' id='" + fomulaData[formula].formulaParameterForArr[i] + "' ></textarea>\
                 </div> ";
         }
-        formulaParameterForArrHtml += setParameterForArrResult(comparedtableId)
         $('.left-parameter').html(formulaParameterForArrHtml);
         $('.formulaParameterForOne ').html(formulaParameterForOneHtml);
 
@@ -72,9 +71,10 @@
                 var KArr = [];
                 for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
                     KArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
-                    ParamArr.push($('.formulaParameterForOne table').eq(i).find('h5').text())
+                    ParamArr.push($('.formulaParameterForOne ').find('h5  input').eq(i).val())
                 }
                 console.log("KArr", KArr)
+                console.log("ParamArr", ParamArr)
                 var XAxis = [];
                 var R = [];
                 var Result = [];
@@ -83,8 +83,8 @@
 
                 XAxis = removeSpaceInArr(XAxis);
                 R = removeSpaceInArr(R);
-                for(var j=0;j<($('.formulaParameterForOne input').length);j++){
-                    if (isNaN(parseFloat($('.formulaParameterForOne input').eq(j).val()))) {
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
                         alert("参数为空,参数长度不同或参数为非数字");
                         return false;
                     }
@@ -100,6 +100,7 @@
                             tempResult.push(Math.round(4096*R[m]/(R[m] + KArr[n])));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
@@ -121,8 +122,10 @@
                     R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
                     R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
                     RxArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(4).val()));
-                    ParamArr.push($('.formulaParameterForOne table').eq(i).find('h5').text())
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
                 }
+                console.log("KArr", KArr)
+                console.log("ParamArr", ParamArr)
                 console.log("VccArr", VccArr)
                 console.log("R1Arr", R1Arr)
                 console.log("R2Arr", R2Arr)
@@ -135,8 +138,8 @@
                 R = $('#R').val().split('\n');
                 XAxis = removeSpaceInArr(XAxis);
                 R = removeSpaceInArr(R);
-                for(var j=0;j<($('.formulaParameterForOne input').length);j++){
-                    if (isNaN(parseFloat($('.formulaParameterForOne input').eq(j).val()))) {
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
                         alert("参数为空,参数长度不同或参数为非数字");
                         return false;
                     }
@@ -152,6 +155,7 @@
                             tempResult.push(parseFloat((VccArr[n] / (R1Arr[n] + (R2Arr[n] + R3Arr[n]) * R[m] / (R2Arr[n] + R3Arr[n] + R[m])) * R[m] / (R2Arr[n] + R3Arr[n] + R[m]) * R3Arr[n]).toFixed(6)));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
@@ -165,7 +169,7 @@
                 var YArr = [];
                 for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
                     YArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
-                    ParamArr.push($('.formulaParameterForOne table').eq(i).find('h5').text())
+                    ParamArr.push($('.formulaParameterForOne ').find('h5  input').eq(i).val())
                 }
                 var Z = [];
                 var K = [];
@@ -178,8 +182,8 @@
                 XAxis = removeSpaceInArr(XAxis);
                 K = removeSpaceInArr(K);
                 Z = removeSpaceInArr(Z);
-                for(var j=0;j<($('.formulaParameterForOne input').length);j++){
-                    if (isNaN(parseFloat($('.formulaParameterForOne input').eq(j).val()))) {
+                for(var j=0;j<($('.formulaParameterForOne  table  input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne   table input').eq(j).val()))) {
                         alert("参数为空,参数长度不同或参数为非数字");
                         return false;
                     }
@@ -195,6 +199,7 @@
                             tempResult.push(parseFloat((XAxis[m] + YArr[n] + Z[m] + K[m]).toFixed(6)));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
@@ -216,11 +221,16 @@
         var formulaName = $("#formula option:selected").text();
         console.log(formulaName);
         var formulaParameterForOneArr = [];
-        var formulaParameterTables= $('.formulaParameterForOne table');
+        var formulaParameterTables= $('.formulaParameterForOne .table-content');
         for(var i=0;i<formulaParameterTables.length;i++){
+            var paramName=$('.formulaParameterForOne .table-content h5').eq(i).find('input').val();
+            formulaParameterForOneArr.push({
+                forOneKey: paramName,
+                forOneValue: ''
+            });
             var formulaParameterForOneTrs = $('.formulaParameterForOne table').eq(i).find('tr');
             for (var k = 0; k < formulaParameterForOneTrs.length; k++) {
-                var forOneKey = $(formulaParameterForOneTrs[k]).find('td :eq(0)').text() || $(formulaParameterForOneTrs[k]).find('th :eq(0)').text();
+                var forOneKey = $(formulaParameterForOneTrs[k]).find('td :eq(0)').text() ;
                 var forOneValue = $(formulaParameterForOneTrs[k]).find('input').val();
                 formulaParameterForOneArr.push({
                     forOneKey: forOneKey,
@@ -232,13 +242,22 @@
         console.log(formulaParameterForOneArr);
         var formulaParameterForArrDivs = $('.left-parameter div');
         var formulaParameterForArrArr = [];
-        for (var j = 0; j < formulaParameterForArrDivs.length; j++) {
-            var forArrKey = $(formulaParameterForArrDivs[j]).find('h4 :eq(0)').text();
-            var forArrValue = removeSpaceInArr($(formulaParameterForArrDivs[j]).find('textarea').val().split('\n'));
+        for (var j = 0; j < (formulaParameterForArrDivs.length + formulaParameterTables.length); j++) {
+            var forArrKey;
+            var forArrValue;
+            if(j<formulaParameterForArrDivs.length ){
+                    forArrKey = $(formulaParameterForArrDivs[j]).find('h4 :eq(0)').text();
+                    forArrValue = removeSpaceInArr($(formulaParameterForArrDivs[j]).find('textarea').val().split('\n'));
+
+            }else{
+                    forArrKey = $(formulaParameterTables[j-formulaParameterForArrDivs.length]).find('h5  input').eq(0).val();
+                    forArrValue = removeSpaceInArr($(formulaParameterTables[j-formulaParameterForArrDivs.length]).find('textarea').val().split('\n'));
+            }
             formulaParameterForArrArr.push({
                 forArrKey: forArrKey,
                 forArrValue: forArrValue
             });
+
         }
         var sendExportData = {
             formulaName: formulaName,
@@ -276,14 +295,12 @@
     $('#addOneFormulaParam').bind('click', function (e) {
         comparedtableId += 1;
         var addFormulaParameterForOneHtml = setParameterForOneHtml(comparedtableId, fomulaData, formula);
-        var addFormulaParameterForArrResult = setParameterForArrResult(comparedtableId);
         $('.formulaParameterForOne ').append(addFormulaParameterForOneHtml);
-        $('.left-parameter ').append(addFormulaParameterForArrResult);
     });
 
     $('.formulaParameterForOne').on('click', '.delParameterOne', function (e) {
         console.log('delParameterOne');
-        var delIndex = parseInt($(this).parents('table').data('index'));
+        var delIndex = parseInt($(this).parents('.table-content').data('index'));
         console.log(delIndex);
         $(".formulaParameterForOne").find('.table-' + delIndex).remove();
         $(".left-parameter").find('.result-' + delIndex).remove();

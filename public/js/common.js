@@ -20,12 +20,12 @@ function removeSpaceInArr(arr) {
 
 function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
     console.log("comparedtableId",comparedtableId);
-    var formulaParameterForOneHtml = '<table cellspacing="0" cellpadding="0" class="table-'+comparedtableId+'" data-index="'+comparedtableId+'"><thead><tr><th ><h5>参数组'+comparedtableId+'</h5></th><th><span class="delParameterOne" >删除参数</span></th></tr></thead>';
+    var formulaParameterForOneHtml = '<div  class="table-content table-'+comparedtableId+'" data-index="'+comparedtableId+'"><h5><input class="paramName" type="text" value="参数组'+comparedtableId+'" /><span class="delParameterOne" >删除参数</span></h5><div><table cellspacing="0" cellpadding="0">';
     console.log(fomulaData[formula].formulaParameterForOne);
     for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
-        formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
+        formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' value='"+fomulaData[formula].formulaParameterForOneDefault[i] +"' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
     }
-    formulaParameterForOneHtml += '</table>';
+    formulaParameterForOneHtml += '</table></div><div><textarea  class="result result-'+comparedtableId+'" ></textarea></div></div>';
 
     return formulaParameterForOneHtml
 }

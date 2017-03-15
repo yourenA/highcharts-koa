@@ -1,5 +1,5 @@
 .top {
-  padding-left: 180px;
+  padding-left: 250px;
   width: 100%;
   background-color: #dddddd;
   height: 100px;
@@ -34,13 +34,57 @@
   -ms-flex: 0 0 250px;
   flex: 0 0 250px;
   border-right: 1px solid #dddddd; }
-.center .left .formulaParameterForOne table {
-  width: 100%; }
+.center .left .formulaParameterForOne>div{
+  overflow: hidden;
+  position: relative;
+}
+.center .left .formulaParameterForOne div h5{
+  padding: 0 10px;
+  height: 40px;
+  line-height: 40px;
+  background: #b3b3b3;
+}
+.paramName{
+  width: 60%;
+  padding: 5px;
+  border-radius: 3px;
+  border: 1px solid #000000;
+  outline: none;
+  background:#b3b3b3;
+}
+.paramName:focus{
+  background: #b3b3b3;
+
+}
+.center .left .formulaParameterForOne div h5 span{
+  float: right;
+  cursor: pointer;
+}
+.center .left .formulaParameterForOne div h5 span:hover{
+  text-decoration: underline;
+  color: #1296db;
+}
+.center .left .formulaParameterForOne div div {
+  background: #1296db;
+  margin-bottom:-3000px;
+  padding-bottom:3000px;
+  display: inline-block;
+  height: auto;
+  width: 50%;
+  vertical-align: top;}
+
+.center .left .formulaParameterForOne textarea{
+  height: 100%;
+  width: 100%;
+  resize: none;
+  min-height: 175px;
+}
 .center .left .formulaParameterForOne table tr:nth-child(2n+1) {
   background: #f3f3f3; }
 .center .left .formulaParameterForOne table tr:nth-child(2n) {
   background: #dddddd; }
 .center .left .formulaParameterForOne table tr td:nth-child(1) {
+  font-size: 12px;
   text-align: right;
   width: 40%;
   padding: 5px; }
@@ -98,12 +142,16 @@
   width: 100%;
   height: calc(100% - 20px); }
 .center .left button {
+  margin-top: 10px;
   margin-left: 3px;
   padding: 2px;
   outline: none;
-  border: 1px solid #333;
+  border: 1px solid #999;
   font-size: 14px;
   cursor: pointer; }
+.center .left button:hover{
+  color: #1296db;
+}
 .center .right {
   display: inline-block;
   -webkit-box-flex: 1;
