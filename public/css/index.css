@@ -2,11 +2,11 @@
   padding-left: 250px;
   width: 100%;
   background-color: #dddddd;
-  height: 100px;
+  height: 125px;
   border-bottom: 1px solid #333; }
 .top .top-left {
-  height: 100px;
-  line-height: 100px;
+  height: 125px;
+  line-height: 125px;
   margin-right: 20px;
   display: inline-block; }
 .top .top-left select {
@@ -21,6 +21,60 @@
   outline: none;
   border-radius: 3px;
   padding: 5px 10px; }
+
+.formula-select-box{
+  margin-top: 20px;
+  overflow: hidden;
+  width:800px;
+  height: 80px;
+
+}
+.formula-select-box:hover{
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.formula-select-box ul{
+  width: 200%;
+  height: 100%;
+  list-style: none;
+}
+.formula-select-box .radio{
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 999;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.formula-select-box ul li{
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  height: 80px;
+  width: 80px;
+  margin: 0 5px;
+}
+.formula-select-box ul li.select:after{
+  position: absolute;
+  content: "";
+  z-index: 998;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  background: url("./../image/select.png") no-repeat;
+}
+.formula-select-box ul li img{
+  z-index: 997;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
 
 .center {
   display: -webkit-box;
@@ -45,7 +99,7 @@
   background: #b3b3b3;
 }
 .paramName{
-  width: 60%;
+  width: 48%;
   padding: 5px;
   border-radius: 3px;
   border: 1px solid #000000;
@@ -64,8 +118,11 @@
   text-decoration: underline;
   color: #1296db;
 }
-.center .left .formulaParameterForOne div div {
-  background: #1296db;
+.table-result{
+  display: flex;
+  border-bottom: 1px solid #403F40;
+}
+.center .left .formulaParameterForOne .table-result div {
   margin-bottom:-3000px;
   padding-bottom:3000px;
   display: inline-block;
@@ -74,10 +131,12 @@
   vertical-align: top;}
 
 .center .left .formulaParameterForOne textarea{
+  padding: 5px;
   height: 100%;
   width: 100%;
   resize: none;
-  min-height: 175px;
+  min-height: 105px;
+
 }
 .center .left .formulaParameterForOne table tr:nth-child(2n+1) {
   background: #f3f3f3; }
@@ -138,6 +197,8 @@
   height: 20px;
   line-height: 20px; }
 .center .left .left-parameter div textarea {
+  border-radius: 3px;
+  padding: 5px;
   resize: none;
   width: 100%;
   height: calc(100% - 20px); }

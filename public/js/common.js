@@ -20,22 +20,16 @@ function removeSpaceInArr(arr) {
 
 function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
     console.log("comparedtableId",comparedtableId);
-    var formulaParameterForOneHtml = '<div  class="table-content table-'+comparedtableId+'" data-index="'+comparedtableId+'"><h5><input class="paramName" type="text" value="参数组'+comparedtableId+'" /><span class="delParameterOne" >删除参数</span></h5><div><table cellspacing="0" cellpadding="0">';
+    var formulaParameterForOneHtml = '<div  class="table-content table-'+comparedtableId+'" data-index="'+comparedtableId+'"><h5><input class="paramName" type="text" value="参数组'+comparedtableId+'" /><span class="delParameterOne" >删除参数</span></h5><div class="table-result"><div><table cellspacing="0" cellpadding="0">';
     console.log(fomulaData[formula].formulaParameterForOne);
     for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
         formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' value='"+fomulaData[formula].formulaParameterForOneDefault[i] +"' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
     }
-    formulaParameterForOneHtml += '</table></div><div><textarea  class="result result-'+comparedtableId+'" ></textarea></div></div>';
+    formulaParameterForOneHtml += '</table></div><div><textarea  class="result result-'+comparedtableId+'" ></textarea></div></div></div>';
 
     return formulaParameterForOneHtml
 }
 
-function setParameterForArrResult(comparedtableId) {
-    return "<div class='result-content result-"+comparedtableId+"'>\
-                    <h4>result"+comparedtableId+"</h4>\
-                    <textarea name=''  class='result result-"+comparedtableId+"' ></textarea>\
-                </div> ";
-}
 
 var highcharts1 = null;
 var highcharts2 = null;
@@ -152,11 +146,10 @@ $(".a-upload").on("change","input[type='file']",function(){
 })
 
 function uploadFile(){
-    if(isNaN(parseInt($('#formula').val()))){
+    if(isNaN(parseInt($('.formula-select-box input:radio:checked').val()))){
         alert("请先选择公式");
         return false;
     }
-    console.log("$('#file').val()",$('#file').val())
     if($('#file').val() === ''){
         alert("请先选择文件");
         return false;
