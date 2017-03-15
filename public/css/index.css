@@ -6,32 +6,16 @@
   border-bottom: 1px solid #333; }
 .top .top-left {
   height: 125px;
+  width: calc(100% - 250px);
   line-height: 125px;
-  margin-right: 20px;
   display: inline-block; }
-.top .top-left select {
-  border: 1px solid #333333;
-  outline: none;
-  border-radius: 3px;
-  padding: 5px 10px; }
-.top .top-right {
-  display: inline-block; }
-.top .top-right input {
-  border: 1px solid #333333;
-  outline: none;
-  border-radius: 3px;
-  padding: 5px 10px; }
 
 .formula-select-box{
   margin-top: 20px;
   overflow: hidden;
-  width:800px;
+  width: 100%;
   height: 80px;
 
-}
-.formula-select-box:hover{
-  overflow-y: hidden;
-  overflow-x: scroll;
 }
 .formula-select-box ul{
   width: 200%;
@@ -123,16 +107,21 @@
   border-bottom: 1px solid #403F40;
 }
 .center .left .formulaParameterForOne .table-result div {
-  margin-bottom:-3000px;
-  padding-bottom:3000px;
   display: inline-block;
   height: auto;
   width: 50%;
   vertical-align: top;}
-
+.result-unit{
+  text-align: center;
+  font-size: 12px;
+  padding: 5px;
+  height: 35px;
+  line-height: 25px;
+  background: #f3f3f3;
+}
 .center .left .formulaParameterForOne textarea{
   padding: 5px;
-  height: 100%;
+  height: calc(100% - 35px);
   width: 100%;
   resize: none;
   min-height: 105px;

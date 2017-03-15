@@ -10,6 +10,8 @@
     var formulaParameterForArrHtml = '';
     var canExportExcel = false;
     var comparedtableId = 1;
+    var ulWidth=0;
+    var formulaBoxWidth=$('.formula-select-box').width();
     $.ajax({
         url: "./../config.json",
         type: "GET",
@@ -17,12 +19,28 @@
         success: function success(data) {
             console.log(data);
             fomulaData = data;
+
             for (var i = 0; i < data.length; i++) {
+                ulWidth+=90;
                 $('.formula-select-box ul').append("<li><input class='radio' name='radio' type='radio' value='"+data[i].key+"'><img src='"+data[i].formulaImg+"'></li>");
             }
+
+            $('.formula-select-box ul').width(ulWidth)
         }
     });
-
+    $('.formula-select-box ').hover(function () {
+        console.log('hover');
+        if(ulWidth>formulaBoxWidth){
+            $(this).css({
+                overflowY: "hidden",
+                overflowX: "scroll"
+            })
+        }
+    },function () {
+        $(this).css({
+            overflow: "hidden"
+        })
+    });
 
     $('.formula-select-box ').on('change','.radio',function () {
         $(this).parent('li').addClass('select').siblings().removeClass('select');
@@ -109,7 +127,7 @@
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
-                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    setResult(XAxis, R, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
 
                 }
@@ -157,7 +175,7 @@
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
-                    setResult(XAxis, R, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    setResult(XAxis, R, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
 
@@ -201,7 +219,7 @@
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
-                    setResult(XAxis, Z, Result, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    setResult(XAxis, Z, Result,fomulaData[formula].resultUnit,fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
 
@@ -248,7 +266,7 @@
                     forArrValue = removeSpaceInArr($(formulaParameterForArrDivs[j]).find('textarea').val().split('\n'));
 
             }else{
-                    forArrKey = $(formulaParameterTables[j-formulaParameterForArrDivs.length]).find('h5  input').eq(0).val();
+                    forArrKey = $(formulaParameterTables[j-formulaParameterForArrDivs.length]).find('h5  input').eq(0).val()+'('+fomulaData[formula].resultUnit+')';
                     forArrValue = removeSpaceInArr($(formulaParameterTables[j-formulaParameterForArrDivs.length]).find('textarea').val().split('\n'));
             }
             formulaParameterForArrArr.push({

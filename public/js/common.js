@@ -25,7 +25,7 @@ function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
     for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
         formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' value='"+fomulaData[formula].formulaParameterForOneDefault[i] +"' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
     }
-    formulaParameterForOneHtml += '</table></div><div><textarea  class="result result-'+comparedtableId+'" ></textarea></div></div></div>';
+    formulaParameterForOneHtml += '</table></div><div><p class="result-unit">结果单位：'+fomulaData[formula].resultUnit+'</p><textarea  class="result result-'+comparedtableId+'" ></textarea></div></div></div>';
 
     return formulaParameterForOneHtml
 }
@@ -33,7 +33,7 @@ function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
 
 var highcharts1 = null;
 var highcharts2 = null;
-function setResult(XAxisArr, resistanceVal, resultArr, title, XAxis, XAxisUnit,ParamArr) {
+function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, XAxisUnit,ParamArr) {
 
     var Result=[];
     for(var i=0;i<resultArr.length;i++){
@@ -67,7 +67,11 @@ function setResult(XAxisArr, resistanceVal, resultArr, title, XAxis, XAxisUnit,P
         },
         yAxis: {
             title: {
-                text: '结果'
+                align: 'high',
+                rotation: 0,
+                offset: 0,
+                y: -10,
+                text: '结果 '+resultUnit
             },
             plotLines: [{
                 value: 0,
@@ -108,6 +112,10 @@ function setResult(XAxisArr, resistanceVal, resultArr, title, XAxis, XAxisUnit,P
         },
         yAxis: {
             title: {
+                align: 'high',
+                rotation: 0,
+                offset: 0,
+                y: -10,
                 text: '电阻值'
             },
             plotLines: [{

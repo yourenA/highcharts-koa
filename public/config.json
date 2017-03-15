@@ -9,7 +9,8 @@
     "formulaParameterForArr":["R"],
     "formulaParameterForArrUnit":["Ω"],
     "XAxis":"T",
-    "XAxisUnit":"℃"
+    "XAxisUnit":"℃",
+    "resultUnit":"K"
   },
   {
     "key":1,
@@ -21,7 +22,8 @@
     "formulaParameterForArr":["R"],
     "formulaParameterForArrUnit":["Ω"],
     "XAxis":"T",
-    "XAxisUnit":"℃"
+    "XAxisUnit":"℃",
+    "resultUnit":"B"
   },
   {
     "key":2,
@@ -33,6 +35,7 @@
     "formulaParameterForArr":["Z","K"],
     "formulaParameterForArrUnit":["",""],
     "XAxis":"X",
-    "XAxisUnit":"deg"
+    "XAxisUnit":"deg",
+    "resultUnit":"F"
   }
 ]
