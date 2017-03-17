@@ -11,4 +11,4 @@ exports.rotateArr =(arr)=>{
         newArr.push(temArr)
     }
     return newArr
-}
+};
