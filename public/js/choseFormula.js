@@ -22,7 +22,7 @@
 
             for (var i = 0; i < data.length; i++) {
                 ulWidth+=90;
-                $('.formula-select-box ul').append("<li><input class='radio' name='radio' type='radio' value='"+data[i].key+"'><img src='"+data[i].formulaImg+"'></li>");
+                $('.formula-select-box ul').append("<li data-formulaName='"+data[i].formulaName+"'><input class='radio' name='radio' type='radio' value='"+data[i].key+"'><img src='./image/"+data[i].formulaImg+"'><h5>"+data[i].formulaLabel+"</h5></li>");
             }
 
             $('.formula-select-box ul').width(ulWidth)
@@ -234,7 +234,7 @@
             alert('请先计算结果再进行导出');
             return false;
         }
-        var formulaName = $("#formula option:selected").text();
+        var formulaName = $(".select").data('formulaname');
         console.log(formulaName);
         var formulaParameterForOneArr = [];
         var formulaParameterTables= $('.formulaParameterForOne .table-content');

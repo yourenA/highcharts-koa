@@ -11,10 +11,10 @@
   display: inline-block; }
 
 .formula-select-box{
-  margin-top: 20px;
+  margin-top: 10px;
   overflow: hidden;
   width: 100%;
-  height: 80px;
+  height: 100px;
 
 }
 .formula-select-box ul{
@@ -29,7 +29,7 @@
   z-index: 999;
   display: inline-block;
   width: 100%;
-  height: 100%;
+  height:80%;
   opacity: 0;
   cursor: pointer;
 }
@@ -37,7 +37,7 @@
   position: relative;
   cursor: pointer;
   display: inline-block;
-  height: 80px;
+  height: 100px;
   width: 80px;
   margin: 0 5px;
 }
@@ -57,9 +57,24 @@
   left: 0;
   top: 0;
   width: 100%;
-  height: 100%;
+  height: 80%;
 }
-
+.formula-select-box ul li h5{
+  font-weight: normal;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  height: 20px;
+  line-height: 20px;
+  text-align: center;
+}
+.formula-select-box ul li.select h5{
+  color: #1296db;
+}
 .center {
   display: -webkit-box;
   display: -webkit-flex;
@@ -104,7 +119,7 @@
 }
 .table-result{
   display: flex;
-  border-bottom: 1px solid #403F40;
+  border-bottom: 1px solid #aaaaaa;
 }
 .center .left .formulaParameterForOne .table-result div {
   display: inline-block;
@@ -118,6 +133,12 @@
   height: 35px;
   line-height: 25px;
   background: #f3f3f3;
+  border-left:1px solid rgb(169, 169, 169) ;
+  border-right:1px solid rgb(169, 169, 169) ;
+}
+.left form{
+  padding-bottom: 10px;
+  border-bottom: 1px solid #aaaaaa;
 }
 .center .left .formulaParameterForOne textarea{
   padding: 5px;
@@ -126,6 +147,9 @@
   resize: none;
   min-height: 105px;
 
+}
+.center .left .formulaParameterForOne table tr td{
+  border-bottom: 1px solid #aaaaaa;
 }
 .center .left .formulaParameterForOne table tr:nth-child(2n+1) {
   background: #f3f3f3; }
@@ -194,13 +218,16 @@
 .center .left button {
   margin-top: 10px;
   margin-left: 3px;
-  padding: 2px;
+  padding:5px;
   outline: none;
-  border: 1px solid #999;
-  font-size: 14px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #aaaaaa;
+  font-size: 12px;
   cursor: pointer; }
 .center .left button:hover{
   color: #1296db;
+  border: 1px solid #1296db;
 }
 .center .right {
   display: inline-block;

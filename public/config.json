@@ -2,7 +2,8 @@
   {
     "key":0,
     "formulaName":"ROUND(4096*R/(R+K),0)",
-    "formulaImg":"./image/formula-1.png",
+    "formulaLabel":"公式一",
+    "formulaImg":"formula-1.png",
     "formulaParameterForOne":["K"],
     "formulaParameterForOneDefault":[12],
     "formulaParameterForOneUnit":["单位"],
@@ -15,7 +16,8 @@
   {
     "key":1,
     "formulaName":"(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3",
-    "formulaImg":"./image/formula-2.png",
+    "formulaLabel":"公式二",
+    "formulaImg":"formula-2.png",
     "formulaParameterForOne":["Vcc","R1","R2","R3","Rx"],
     "formulaParameterForOneDefault":[26,23,8,6,6],
     "formulaParameterForOneUnit":["","","","",""],
@@ -28,7 +30,8 @@
   {
     "key":2,
     "formulaName":"X+Y+Z+K",
-    "formulaImg":"./image/formula-3.png",
+    "formulaLabel":"公式三",
+    "formulaImg":"formula-3.png",
     "formulaParameterForOne":["Y"],
     "formulaParameterForOneDefault":[1000],
     "formulaParameterForOneUnit":[""],

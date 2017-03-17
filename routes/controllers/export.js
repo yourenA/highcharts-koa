@@ -13,7 +13,7 @@ exports.exportResult = async (ctx) =>{
         formulaParameterForOne=body.formulaParameterForOne,
         formulaParameterForArr=body.formulaParameterForArr;
 
-    let formulaNameArr=["formulaName",formulaName];
+    let formulaNameArr=["公式",formulaName];
     console.log("body",body);
     xlsxData.push(formulaNameArr);
     for(let i =0;i<formulaParameterForOne.length;i++){
