@@ -21,7 +21,7 @@
             fomulaData = data;
 
             for (var i = 0; i < data.length; i++) {
-                ulWidth+=90;
+                ulWidth+=130;
                 $('.formula-select-box ul').append("<li data-formulaName='"+data[i].formulaName+"'><input class='radio' name='radio' type='radio' value='"+data[i].key+"'><img src='./image/"+data[i].formulaImg+"'><h5>"+data[i].formulaLabel+"</h5></li>");
             }
 
@@ -44,6 +44,11 @@
 
     $('.formula-select-box ').on('change','.radio',function () {
         $(this).parent('li').addClass('select').siblings().removeClass('select');
+        console.log($(this).siblings('img').attr('src'))
+        $('.select-pic').css({
+            background:"url("+$(this).siblings('img').attr('src')+")",
+            backgroundSize:'250px 200px'
+        })
         comparedtableId = 1;
         $('.addOneFormulaParam').css({display: 'block'})
         $('#file').val('');
@@ -93,44 +98,51 @@
         switch (formula) {
             case 0:
                 var ParamArr = [];
-                var KArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                var R3Arr = [];
                 for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
-                    KArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
-                    ParamArr.push($('.formulaParameterForOne ').find('h5  input').eq(i).val())
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
                 }
                 var XAxis = [];
-                var R = [];
+                var Rt = [];
                 var Result = [];
                 XAxis = $('#T').val().split('\n');
-                R = $('#R').val().split('\n');
-
+                Rt = $('#Rt').val().split('\n');
                 XAxis = removeSpaceInArr(XAxis);
-                R = removeSpaceInArr(R);
+                Rt = removeSpaceInArr(Rt);
                 for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
                     if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
                         alert("参数为空,参数长度不同或参数为非数字");
                         return false;
                     }
                 }
-                if ( KArr.length===0||XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
-                    alert("参数为空,参数长度不同或参数为非数字");
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var n = 0; n < KArr.length; n++) {
+                    for (var n = 0; n < VccArr.length; n++) {
                         var tempResult = [];
                         for (var m = 0; m < XAxis.length; m++) {
-                            //ROUND(4096*$B2/($B2+10),0)
-                            tempResult.push(Math.round(4096*R[m]/(R[m] + KArr[n])));
+                            //Vout=Vcc*(R3/(R3+R2+(R1*Rt/(R1+Rt))))
+                            tempResult.push(parseFloat((VccArr[n]*(R3Arr[n]/(R3Arr[n]+R2Arr[n]+(R1Arr[n]*Rt[m]/(R1Arr[n]+Rt[m]))))).toFixed(6)));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
-                    setResult(XAxis, R, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
-
                 }
+
                 return;
             case 1:
                 var ParamArr = [];
@@ -138,88 +150,558 @@
                 var R1Arr = [];
                 var R2Arr = [];
                 var R3Arr = [];
-                var RxArr = [];
                 for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
                     VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
                     R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
                     R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
                     R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
-                    RxArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(4).val()));
                     ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
                 }
                 var XAxis = [];
-                var R = [];
+                var Rt = [];
                 var Result = [];
                 XAxis = $('#T').val().split('\n');
-                R = $('#R').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
                 XAxis = removeSpaceInArr(XAxis);
-                R = removeSpaceInArr(R);
+                Rt = removeSpaceInArr(Rt);
                 for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
                     if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
                         alert("参数为空,参数长度不同或参数为非数字");
                         return false;
                     }
                 }
-                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || RxArr.length === 0 || XAxis.length === 0 || R.length === 0 || XAxis.length !== R.length) {
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
                     for (var n = 0; n < VccArr.length; n++) {
                         var tempResult = [];
                         for (var m = 0; m < XAxis.length; m++) {
-                            //(Vcc /(R1 + ((R2+R3) * R)/((R2+R3) + R))*R/((R2+R3)+R))*R3 (Math.round(R[m] + (R[m] + KArr[n])));
-                            tempResult.push(parseFloat((VccArr[n] / (R1Arr[n] + (R2Arr[n] + R3Arr[n]) * R[m] / (R2Arr[n] + R3Arr[n] + R[m])) * R[m] / (R2Arr[n] + R3Arr[n] + R[m]) * R3Arr[n]).toFixed(6)));
+                            //Vout=Vcc*(R3/(R3+(R1*(R2+Rt))/(R1+R2+Rt)))
+                            tempResult.push(parseFloat((VccArr[n]*(R3Arr[n]/(R3Arr[n]+(R1Arr[n]*(R2Arr[n]+Rt[m]))/(R1Arr[n]+R2Arr[n]+Rt[m])))).toFixed(6)));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
-                    setResult(XAxis, R, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
 
                 return;
             case 2:
                 var ParamArr = [];
-                var YArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
                 for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
-                    YArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
-                    ParamArr.push($('.formulaParameterForOne ').find('h5  input').eq(i).val())
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
                 }
-                var Z = [];
-                var K = [];
                 var XAxis = [];
+                var Rt = [];
                 var Result = [];
-                XAxis = $('#X').val().split('\n');
-                Z = $('#Z').val().split('\n');
-                K = $('#K').val().split('\n');
-
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
                 XAxis = removeSpaceInArr(XAxis);
-                K = removeSpaceInArr(K);
-                Z = removeSpaceInArr(Z);
-                for(var j=0;j<($('.formulaParameterForOne  table  input').length);j++){
-                    if (isNaN(parseFloat($('.formulaParameterForOne   table input').eq(j).val()))) {
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
                         alert("参数为空,参数长度不同或参数为非数字");
                         return false;
                     }
                 }
-                if (YArr.length===0 || XAxis.length === 0 || K.length === 0 || Z.length === 0 || Z.length !== K.length) {
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 ||  XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
                 } else {
-                    for (var n = 0; n < YArr.length; n++) {
+                    for (var n = 0; n < VccArr.length; n++) {
                         var tempResult = [];
                         for (var m = 0; m < XAxis.length; m++) {
-                            //ROUND(4096*$B2/($B2+10),0)
-                            tempResult.push(parseFloat((XAxis[m] + YArr[n] + Z[m] + K[m]).toFixed(6)));
+                            //Vout=Vcc*(R2/(R2+R1*Rt/(R1+Rt)))
+                            tempResult.push(parseFloat((VccArr[n]*(R2Arr[n]/(R2Arr[n]+R1Arr[n]*Rt[m]/(R1Arr[n]+Rt[m])))).toFixed(6)));
                         }
                         $('.result').eq(n).val(tempResult.join('\n'));
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
                     console.log("result", Result);
-                    setResult(XAxis, Z, Result,fomulaData[formula].resultUnit,fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 3:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(R1/(R1+Rt))
+                            tempResult.push(parseFloat((VccArr[n]*(R1Arr[n]/(R1Arr[n]+Rt[m]))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 4:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                var R3Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(1-(R1/(R3+R1+(R2*Rt/(R2+Rt)))))
+                            tempResult.push(parseFloat((VccArr[n]*(1-(R1Arr[n]/(R3Arr[n]+R1Arr[n]+(R2Arr[n]*Rt[m]/(R2Arr[n]+Rt[m])))))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 5:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 ||  XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(R2*Rt/(R2+Rt)/(R1+R2*Rt/(R2+Rt)))
+                            tempResult.push(parseFloat((VccArr[n]*(R2Arr[n]*Rt[m]/(R2Arr[n]+Rt[m])/(R1Arr[n]+R2Arr[n]*Rt[m]/(R2Arr[n]+Rt[m])))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 6:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 ||  XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(1-R1/(R1+R2+Rt))
+                            tempResult.push(parseFloat((VccArr[n]*(1-R1Arr[n]/(R1Arr[n]+R2Arr[n]+Rt[m]))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 7:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(Rt/(R1+Rt))
+                            tempResult.push(parseFloat((VccArr[n]*(Rt[m]/(R1Arr[n]+Rt[m]))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 8:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 ||  XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(R2/(R1+R2+Rt))
+                            tempResult.push(parseFloat((VccArr[n]*(R2Arr[n]/(R1Arr[n]+R2Arr[n]+Rt[m]))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 9:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                var R3Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(1-R1/(R1+(R2*(R3+Rt)/(R2+R3+Rt))))
+                            tempResult.push(parseFloat((VccArr[n]*(1-R1Arr[n]/(R1Arr[n]+(R2Arr[n]*(R3Arr[n]+Rt[m])/(R2Arr[n]+R3Arr[n]+Rt[m]))))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 10:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                var R3Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(1-R1/(R1+(R2+R3)*Rt/(R2+R3+Rt)))*(R3/(R2+R3))
+                            tempResult.push(parseFloat((VccArr[n]*(1-R1Arr[n]/(R1Arr[n]+(R2Arr[n]+R3Arr[n])*Rt[m]/(R2Arr[n]+R3Arr[n]+Rt[m])))*(R3Arr[n]/(R2Arr[n]+R3Arr[n]))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 11:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                var R3Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Rt = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Rt = $('#Rt').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Rt = removeSpaceInArr(Rt);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Rt",Rt);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(1-R1/(R1+(Rt+R3)*R2/(R2+R3+Rt)))*(R3/(Rt+R3))
+                            tempResult.push(parseFloat((VccArr[n]*(1-R1Arr[n]/(R1Arr[n]+(Rt[m]+R3Arr[n])*R2Arr[n]/(R2Arr[n]+R3Arr[n]+Rt[m])))*(R3Arr[n]/(Rt[m]+R3Arr[n]))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
+                    canExportExcel = true;
+                }
+
+                return;
+            case 12:
+                var ParamArr = [];
+                var VccArr = [];
+                var R1Arr = [];
+                var R2Arr = [];
+                var R3Arr = [];
+                var R4Arr = [];
+                for (var i = 0; i < $('.formulaParameterForOne table').length; i++) {
+                    VccArr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(0).val()));
+                    R1Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(1).val()));
+                    R2Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(2).val()));
+                    R3Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(3).val()));
+                    R4Arr.push(parseFloat($('.formulaParameterForOne table').eq(i).find('input').eq(4).val()));
+                    ParamArr.push($('.formulaParameterForOne ').find('h5 input').eq(i).val())
+                }
+                var XAxis = [];
+                var Vin = [];
+                var Result = [];
+                XAxis = $('#T').val().split('\n');
+                Vin = $('#Vin').val().split('\n');
+                XAxis = removeSpaceInArr(XAxis);
+                Vin = removeSpaceInArr(Vin);
+                for(var j=0;j<($('.formulaParameterForOne table input').length);j++){
+                    if (isNaN(parseFloat($('.formulaParameterForOne table input').eq(j).val()))) {
+                        alert("参数为空,参数长度不同或参数为非数字");
+                        return false;
+                    }
+                }
+                console.log("XAxis",XAxis);
+                console.log("Vin",Vin);
+                if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 ||R4Arr.length === 0 || XAxis.length === 0 || Vin.length === 0 || XAxis.length !== Vin.length) {
+                    alert("参数为空或参数长度不同");
+                    return false;
+                } else {
+                    for (var n = 0; n < VccArr.length; n++) {
+                        var tempResult = [];
+                        for (var m = 0; m < XAxis.length; m++) {
+                            //Vout=Vcc*(1-R1/(R1+R3*(R2+R4)/(R2+R3+R4)))*(R4/(R2+R4))+Vin*(R4/(R2+R4))
+                            tempResult.push(parseFloat((VccArr[n]*(1-R1Arr[n]/(R1Arr[n]+R3Arr[n]*(R2Arr[n]+R4Arr[n])/(R2Arr[n]+R3Arr[n]+R4Arr[n])))*(R4Arr[n]/(R2Arr[n]+R4Arr[n]))+Vin[m]*(R4Arr[n]/(R2Arr[n]+R4Arr[n]))).toFixed(6)));
+                        }
+                        $('.result').eq(n).val(tempResult.join('\n'));
+                        $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
+                        Result.push(tempResult)
+                    }
+                    console.log("result", Result);
+                    setResult(XAxis, Vin, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
 
@@ -234,7 +716,7 @@
             alert('请先计算结果再进行导出');
             return false;
         }
-        var formulaName = $(".select").data('formulaname');
+        var formulaName = fomulaData[formula].formulaLabel+":"+$(".select").data('formulaname');
         console.log(formulaName);
         var formulaParameterForOneArr = [];
         var formulaParameterTables= $('.formulaParameterForOne .table-content');
@@ -320,7 +802,6 @@
         console.log(delIndex);
         $(".formulaParameterForOne").find('.table-' + delIndex).remove();
         $(".left-parameter").find('.result-' + delIndex).remove();
-        // $(".formulaParameterForOne table").eq(delIndex-1).remove()
     });
 
 
