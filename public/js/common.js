@@ -85,7 +85,7 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
             headerFormat: '<span style="font-size: 14px">' + XAxis + ':{point.key}' + XAxisUnit + '</span><table>',
             pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' + '<td style="text-align: right"><b>{point.y}</b></td></tr>',
             footerFormat: '</table>',
-            valueDecimals: 2
+            valueDecimals: 6
         },
         series:Result
     });
@@ -130,7 +130,6 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
             headerFormat: '<span style="font-size: 14px">温度:{point.key}</span><table>',
             pointFormat: '<tr><td style="color: {series.color}">{series.name}: </td>' + '<td style="text-align: right"><b>{point.y}</b></td></tr>',
             footerFormat: '</table>',
-            valueDecimals: 2
         },
         series: [{
             name: '电阻值',
@@ -179,7 +178,7 @@ function uploadFile(){
         contentType: false,
         processData: false,
         success: function(data){
-            console.log('imgUploader upload success, data:', data);
+            console.log('xlsx Uploader upload success, data:', data);
             if($('.left-parameter>div:not(.result-content)').length  === data.length){
                 for(var i=0;i<data.length;i++){
                     $('.left-parameter').find('textarea').eq(i).val(data[i].join('\n'));

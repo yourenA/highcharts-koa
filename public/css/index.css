@@ -111,6 +111,9 @@
   outline: none;
   background:#b3b3b3;
 }
+.left-parameter .paramName{
+  width: 100%;
+}
 .paramName:focus{
   background: #b3b3b3;
 

@@ -65,12 +65,12 @@
 
 
         formulaParameterForArrHtml += "<div>\
-                    <h4>" + fomulaData[formula].XAxis + " " + fomulaData[formula].XAxisUnit + "</h4>\
+                    <input class='paramName' type='text' value='"+fomulaData[formula].XAxis + " " + fomulaData[formula].XAxisUnit +"' />\
                     <textarea name='' id='" + fomulaData[formula].XAxis + "' ></textarea>\
                 </div> ";
         for (var i = 0; i < fomulaData[formula].formulaParameterForArr.length; i++) {
             formulaParameterForArrHtml += "<div >\
-                    <h4>" + fomulaData[formula].formulaParameterForArr[i] + " " + fomulaData[formula].formulaParameterForArrUnit[i] + "</h4>\
+                    <input class='paramName' type='text' value='"+ fomulaData[formula].formulaParameterForArr[i] + " " + fomulaData[formula].formulaParameterForArrUnit[i] +"' />\
                     <textarea name='' id='" + fomulaData[formula].formulaParameterForArr[i] + "' ></textarea>\
                 </div> ";
         }
@@ -744,7 +744,7 @@
             var forArrKey;
             var forArrValue;
             if(j<formulaParameterForArrDivs.length ){
-                    forArrKey = $(formulaParameterForArrDivs[j]).find('h4 :eq(0)').text();
+                    forArrKey = $(formulaParameterForArrDivs[j]).find('.paramName :eq(0)').val();
                     forArrValue = removeSpaceInArr($(formulaParameterForArrDivs[j]).find('textarea').val().split('\n'));
 
             }else{
