@@ -1,31 +1,58 @@
 <!DOCTYPE html>
-<html lang="zh-cmn-Hans">
+<html lang="en">
 <head>
-    <title>Node.js Ajax Upload File</title>
-    <link type="text/css" rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+    <meta charset="UTF-8">
+    <title>test</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        div{
+            width: 100px;
+            height: 100px;
+        }
+        textarea{
+            width: 100px;
+            height: 100px;
+        }
+        #ta{
+            width: 100px;
+            height: 100px;
+            overflow: scroll;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class = "page-header">
-        <h2>Node.js Ajax Upload File</h2>
-    </div>
-    <form class = "form-horizontal" enctype='multipart/form-data'  action='javascript:;' role = "form" id = "frmUploadFile">
-        <div class = "form-group">
-            <label class = "control-label col-sm-2">上传选择</label>
-            <div class = "col-sm-4">
-                <input type = "file" name = "file" id="file" class = "form-control" />
-            </div>
-        </div>
-        <div class = "form-group">
-            <div class = "col-sm-offset-2 col-sm-4">
-                <button class = "btn btn-primary" onClick = "uploadFile()">上传</button>
-                <span class = "help-inline" id = "spanMessage">选择文件，并上传</span>
-            </div>
-        </div>
-    </form>
+<div>
 </div>
-<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="./js/demo.js"></script>
+<button id="add-textarea">添加textarea</button>
+<button id="add-data">添加数据</button>
+<script src="//cdn.bootcss.com/jquery/1.8.2/jquery.min.js"></script>
+<script>
+    $('#add-textarea').click(function () {
+        $('div').html("<textarea onscroll='scrollEvent()'></textarea>")
+    })
+    $('#add-data').click(function () {
+        $('textarea').val('123\n56\n89\n78\n123\n56\n89\n78\n123\n56\n89\n78\n123\n56\n89\n78\n123\n56\n89\n78\n123\n56\n89\n78\n123\n56\n89\n78\n123\n56\n89\n78\n')
+    })
+    $(document).on('scroll','textarea',function(){
+        console.log('scroll')
+    })
+    function scrollEvent() {
+        console.log("scroll")
+    }
+</script>
+<div id="ta">tata</div>
+<!--<script>-->
+    <!--window.onload = function () {-->
+        <!--var ta = document.getElementById('ta'), i = 0;-->
+        <!--setInterval(function () {-->
+            <!--ta.text(ta.text()+i + '\n');-->
+            <!--i++;-->
+            <!--ta.scrollTop = ta.scrollHeight;//////////////-->
+        <!--}, 1000);-->
+    <!--}-->
+<!--</script>-->
 </body>
 </html>

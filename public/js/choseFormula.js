@@ -66,12 +66,12 @@
 
         formulaParameterForArrHtml += "<div>\
                     <input class='paramName' type='text' value='"+fomulaData[formula].XAxis + " " + fomulaData[formula].XAxisUnit +"' />\
-                    <textarea name='' id='" + fomulaData[formula].XAxis + "' ></textarea>\
+                    <textarea class='XTextarea' onscroll='scrollEvent(this)' name='' id='" + fomulaData[formula].XAxis + "' ></textarea>\
                 </div> ";
         for (var i = 0; i < fomulaData[formula].formulaParameterForArr.length; i++) {
             formulaParameterForArrHtml += "<div >\
                     <input class='paramName' type='text' value='"+ fomulaData[formula].formulaParameterForArr[i] + " " + fomulaData[formula].formulaParameterForArrUnit[i] +"' />\
-                    <textarea name='' id='" + fomulaData[formula].formulaParameterForArr[i] + "' ></textarea>\
+                    <textarea  class='RTextarea'  name='' id='" + fomulaData[formula].formulaParameterForArr[i] + "' ></textarea>\
                 </div> ";
         }
         $('.left-parameter').html(formulaParameterForArrHtml);
@@ -89,9 +89,7 @@
         }
 
     });
-    $(document).on('scroll','.left-parameter textarea',function(){
-        console.log('scroll2222')
-    })
+
     $('.left ').on('keyup','.table-result input',function (e) {
         if(e.keyCode==13){
             $('#compute').click();
@@ -130,7 +128,7 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
+
                 console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
@@ -146,7 +144,7 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
+
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -194,7 +192,7 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
+
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -240,7 +238,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -268,8 +265,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -284,7 +279,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -316,8 +310,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -332,7 +324,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -362,8 +353,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 ||  XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -378,7 +367,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -408,8 +396,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 ||  XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -424,7 +410,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -452,8 +437,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -468,7 +451,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -498,8 +480,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 ||  XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -514,7 +494,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -546,8 +525,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -562,7 +539,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -594,8 +570,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -610,7 +584,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -642,8 +615,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Rt",Rt);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 || XAxis.length === 0 || Rt.length === 0 || XAxis.length !== Rt.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -658,7 +629,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Rt, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }
@@ -692,8 +662,6 @@
                         return false;
                     }
                 }
-                console.log("XAxis",XAxis);
-                console.log("Vin",Vin);
                 if (VccArr.length === 0 || R1Arr.length === 0 || R2Arr.length === 0 || R3Arr.length === 0 ||R4Arr.length === 0 || XAxis.length === 0 || Vin.length === 0 || XAxis.length !== Vin.length) {
                     alert("参数为空或参数长度不同");
                     return false;
@@ -708,7 +676,6 @@
                         $('.formulaParameterForOne textarea').eq(n).val(tempResult.join('\n'));
                         Result.push(tempResult)
                     }
-                    console.log("result", Result);
                     setResult(XAxis, Vin, Result, fomulaData[formula].resultUnit, fomulaData[formula].formulaName, fomulaData[formula].XAxis, fomulaData[formula].XAxisUnit, ParamArr);
                     canExportExcel = true;
                 }

@@ -18,14 +18,14 @@ function removeSpaceInArr(arr) {
     return arr;
 }
 
-function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
-    console.log("comparedtableId",comparedtableId);
-    var formulaParameterForOneHtml = '<div  class="table-content table-'+comparedtableId+'" data-index="'+comparedtableId+'"><h5><input class="paramName" type="text" value="参数组'+comparedtableId+'" /><span class="delParameterOne" >删除参数</span></h5><div class="table-result"><div><table cellspacing="0" cellpadding="0">';
+function setParameterForOneHtml(comparedtableId, fomulaData, formula) {
+    console.log("comparedtableId", comparedtableId);
+    var formulaParameterForOneHtml = '<div  class="table-content table-' + comparedtableId + '" data-index="' + comparedtableId + '"><h5><input class="paramName" type="text" value="参数组' + comparedtableId + '" /><span class="delParameterOne" >删除参数</span></h5><div class="table-result"><div><table cellspacing="0" cellpadding="0">';
     console.log(fomulaData[formula].formulaParameterForOne);
     for (var i = 0; i < fomulaData[formula].formulaParameterForOne.length; i++) {
-        formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] +" "+fomulaData[formula].formulaParameterForOneUnit[i]+ "</td><td> <input type='text' value='"+fomulaData[formula].formulaParameterForOneDefault[i] +"' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
+        formulaParameterForOneHtml += "<tr><td>" + fomulaData[formula].formulaParameterForOne[i] + " " + fomulaData[formula].formulaParameterForOneUnit[i] + "</td><td> <input type='text' value='" + fomulaData[formula].formulaParameterForOneDefault[i] + "' id='" + fomulaData[formula].formulaParameterForOne[i] + "'/></td></tr> ";
     }
-    formulaParameterForOneHtml += '</table></div><div><p class="result-unit">结果单位：'+fomulaData[formula].resultUnit+'</p><textarea  class="result result-'+comparedtableId+'" ></textarea></div></div></div>';
+    formulaParameterForOneHtml += '</table></div><div><p class="result-unit">结果单位：' + fomulaData[formula].resultUnit + '</p><textarea  class="result result-' + comparedtableId + '" ></textarea></div></div></div>';
 
     return formulaParameterForOneHtml
 }
@@ -33,16 +33,16 @@ function setParameterForOneHtml(comparedtableId,fomulaData,formula) {
 
 var highcharts1 = null;
 var highcharts2 = null;
-function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, XAxisUnit,ParamArr) {
+function setResult(XAxisArr, resistanceVal, resultArr, resultUnit, title, XAxis, XAxisUnit, ParamArr) {
 
-    var Result=[];
-    for(var i=0;i<resultArr.length;i++){
+    var Result = [];
+    for (var i = 0; i < resultArr.length; i++) {
         Result.push({
             name: ParamArr[i],
             data: resultArr[i]
         })
     }
-    console.log("Result",Result)
+    console.log("Result", Result)
     highcharts1 = Highcharts.chart('hchartsBox', {
         chart: {
             plotBorderWidth: 1,
@@ -60,7 +60,7 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
         },
         xAxis: {
             title: {
-                text: XAxis+' '+XAxisUnit
+                text: XAxis + ' ' + XAxisUnit
             },
             categories: XAxisArr,
             tickInterval: 1
@@ -71,7 +71,7 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
                 rotation: 0,
                 offset: 0,
                 y: -10,
-                text: '结果 '+resultUnit
+                text: '结果 ' + resultUnit
             },
             plotLines: [{
                 value: 0,
@@ -87,7 +87,7 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
             footerFormat: '</table>',
             valueDecimals: 6
         },
-        series:Result
+        series: Result
     });
     highcharts2 = Highcharts.chart('hchartsBox2', {
         chart: {
@@ -105,7 +105,7 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
         },
         xAxis: {
             title: {
-                text: XAxis+' '+XAxisUnit
+                text: XAxis + ' ' + XAxisUnit
             },
             categories: XAxisArr,
             tickInterval: 1
@@ -138,36 +138,41 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
     });
 }
 
-$("input[type='file']").on("change",function(){
-    var filePath=$(this).val();
-    if(filePath.indexOf("xlsx")!=-1 ){
+
+$("input[type='file']").on("change", function () {
+    var filePath = $(this).val();
+    if (filePath.indexOf("xlsx") != -1) {
         $(".fileerrorTip").html("").hide();
-        var arr=filePath.split('\\');
-        var fileName=arr[arr.length-1];
+        var arr = filePath.split('\\');
+        var fileName = arr[arr.length - 1];
         $(".showFileName").html('文件格式正确');
-    }else{
+    } else {
         $(".showFileName").html("");
         $(".fileerrorTip").html("文件格式错误,请选择.xlsx文件").show();
         return false
     }
 })
-
-function uploadFile(){
-    if(isNaN(parseInt($('.formula-select-box input:radio:checked').val()))){
+function scrollEvent(e) {
+    console.log();
+    $('.left-parameter .RTextarea').scrollTop($(e).scrollTop())
+    $('.table-result textarea').scrollTop($(e).scrollTop())
+}
+function uploadFile() {
+    if (isNaN(parseInt($('.formula-select-box input:radio:checked').val()))) {
         alert("请先选择公式");
         return false;
     }
-    if($('#file').val() === ''){
+    if ($('#file').val() === '') {
         alert("请先选择文件");
         return false;
     }
     console.log($('#file').val().indexOf(".xlsx"));
-    if($('#file').val().indexOf("xlsx") === -1 ){
+    if ($('#file').val().indexOf("xlsx") === -1) {
         alert("请选择xlsx文件");
         return false;
     }
     var formData = new FormData();
-    formData.append("file",$('#file')[0].files[0]);
+    formData.append("file", $('#file')[0].files[0]);
     console.log(formData);
     $.ajax({
         url: '/api/import',
@@ -177,17 +182,17 @@ function uploadFile(){
         cache: false,
         contentType: false,
         processData: false,
-        success: function(data){
+        success: function (data) {
             console.log('xlsx Uploader upload success, data:', data);
-            if($('.left-parameter>div:not(.result-content)').length  === data.length){
-                for(var i=0;i<data.length;i++){
+            if ($('.left-parameter>div:not(.result-content)').length === data.length) {
+                for (var i = 0; i < data.length; i++) {
                     $('.left-parameter').find('textarea').eq(i).val(data[i].join('\n'));
                 }
-            }else{
+            } else {
                 alert('导入文件参数与公式参数不相同')
             }
         },
-        error: function(){
+        error: function () {
             $("#spanMessage").html("与服务器通信发生错误");
         }
     });
