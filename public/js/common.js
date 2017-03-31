@@ -138,16 +138,16 @@ function setResult(XAxisArr, resistanceVal, resultArr,resultUnit, title, XAxis, 
     });
 }
 
-$(".a-upload").on("change","input[type='file']",function(){
+$("input[type='file']").on("change",function(){
     var filePath=$(this).val();
     if(filePath.indexOf("xlsx")!=-1 ){
         $(".fileerrorTip").html("").hide();
         var arr=filePath.split('\\');
         var fileName=arr[arr.length-1];
-        $(".showFileName").html(fileName);
+        $(".showFileName").html('文件格式正确');
     }else{
         $(".showFileName").html("");
-        $(".fileerrorTip").html("请选择xlsx文件").show();
+        $(".fileerrorTip").html("文件格式错误,请选择.xlsx文件").show();
         return false
     }
 })

@@ -89,6 +89,14 @@
         }
 
     });
+    $(document).on('scroll','.left-parameter textarea',function(){
+        console.log('scroll2222')
+    })
+    $('.left ').on('keyup','.table-result input',function (e) {
+        if(e.keyCode==13){
+            $('#compute').click();
+        }
+    });
 
     $('#compute').bind('click', function (e) {
         if(isNaN(parseInt(formula))){
@@ -803,6 +811,8 @@
         $(".formulaParameterForOne").find('.table-' + delIndex).remove();
         $(".left-parameter").find('.result-' + delIndex).remove();
     });
+
+
 
 
 })(jQuery);

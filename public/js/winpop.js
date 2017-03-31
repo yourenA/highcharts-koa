@@ -60,18 +60,18 @@
             mask.on("click", function(e) {
                 _this.hide();
             });
-            jQuery(document).on("keyup", function(e) {
-                var kc = e.keyCode,
-                    cb = _this.get("confirmBack");;
-                if (kc === 27) {
-                    _this.hide();
-                } else if (kc === 13) {
-                    _this.hide();
-                    if (_this.get("type") === "confirm") {
-                        cb && cb(true);
-                    }
-                }
-            });
+            // jQuery(document).on("keyup", function(e) {
+            //     var kc = e.keyCode,
+            //         cb = _this.get("confirmBack");;
+            //     if (kc === 27) {
+            //         _this.hide();
+            //     } else if (kc === 13) {
+            //         _this.hide();
+            //         if (_this.get("type") === "confirm") {
+            //             cb && cb(true);
+            //         }
+            //     }
+            // });
         },
         alert: function(str, btnstr) {
 
