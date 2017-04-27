@@ -10,6 +10,7 @@ import {rotateArr} from './common';
 exports.importExcel = async (ctx) =>{
     let body = ctx.req.file ;/*这里是req,不是request*/
     let fileurl=body.path;
+    console.log("body:",body)
     const workSheetsFromFile = xlsx.parse(`${__dirname}/../../${fileurl}`);
     workSheetsFromFile[0].data.shift();
     let  importData=rotateArr(workSheetsFromFile[0].data);
