@@ -7,7 +7,7 @@ import xlsx from 'node-xlsx';
 import fs from 'fs';
 import {rotateArr} from './common';
 
-exports.importExcel = async (ctx) =>{
+exports.importExcel =  (ctx) =>{
     let body = ctx.req.file ;/*这里是req,不是request*/
     let fileurl=body.path;
     console.log("body:",body)
