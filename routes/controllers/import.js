@@ -9,6 +9,11 @@ import {rotateArr} from './common';
 
 exports.importExcel =  (ctx) =>{
     try {
+        /**
+         * ctx.req  Node 的 request 对象。
+         * ctx.request Koa 的 Request 对象。
+         * 注意一个node,一个是koa
+         * */
         let body = ctx.req.file ;/*这里是req,不是request*/
         console.log("body:",body)
         let fileurl=body.path;

@@ -166,14 +166,12 @@ function uploadFile() {
         alert("请先选择文件");
         return false;
     }
-    console.log($('#file').val().indexOf(".xlsx"));
     if ($('#file').val().indexOf("xlsx") === -1) {
         alert("请选择xlsx文件");
         return false;
     }
     var formData = new FormData();
     formData.append("file", $('#file')[0].files[0]);
-    console.log('formData',formData);
     $.ajax({
         url: '/api/import',
         type: 'POST',
